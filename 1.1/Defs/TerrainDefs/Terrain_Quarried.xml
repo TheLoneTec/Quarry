@@ -21,7 +21,6 @@
 		<generatedFilth>Filth_Dirt</generatedFilth>
 		<fertility>0</fertility>
 		<takeFootprints>false</takeFootprints>
-		<acceptFilth>true</acceptFilth>
 		<avoidWander>true</avoidWander>
 		<holdSnow>true</holdSnow>
 		<ignoreConfigErrors>true</ignoreConfigErrors>
@@ -41,7 +40,6 @@
 		<generatedFilth>Filth_Dirt</generatedFilth>
 		<fertility>0</fertility>
 		<takeFootprints>false</takeFootprints>
-		<acceptFilth>true</acceptFilth>
 		<avoidWander>true</avoidWander>
 		<ignoreConfigErrors>true</ignoreConfigErrors>
 	</TerrainDef>
