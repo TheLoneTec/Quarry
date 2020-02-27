@@ -38,7 +38,7 @@ namespace Quarry
         private List<string> rockTypesUnder = new List<string>();
         private List<ThingDef> blocksUnder = new List<ThingDef>();
         private List<ThingDef> chunksUnder = new List<ThingDef>();
-        private List<Pawn> owners = new List<Pawn>();
+        private List<Pawn> owners => compAssignable.AssignedPawnsForReading;
         #endregion Fields
 
         #region Public Properties
@@ -54,7 +54,21 @@ namespace Quarry
                 {
                     return Enumerable.Empty<Pawn>();
                 }
-                return Map.mapPawns.FreeColonists;
+                return Map.mapPawns.FreeColonists.Where(x=> !x.WorkTagIsDisabled(WorkTags.Mining) && !x.WorkTypeIsDisabled(WorkTypeDefOf.Mining));
+            }
+        }
+        public CompAssignableToPawn compAssignable
+        {
+            get
+            {
+                return this.TryGetComp<CompAssignableToPawn>();
+            }
+        }
+        public CompForbiddable forbiddable
+        {
+            get
+            {
+                return this.TryGetComp<CompForbiddable>();
             }
         }
 
@@ -199,7 +213,6 @@ namespace Quarry
             Scribe_Values.Look(ref quarryPercent, "QRY_quarryPercent", 1f);
             Scribe_Values.Look(ref jobsCompleted, "QRY_jobsCompleted", 0);
             Scribe_Collections.Look(ref rockTypesUnder, "QRY_rockTypesUnder", LookMode.Value);
-            Scribe_Collections.Look(ref owners, "owners", LookMode.Reference);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -538,14 +551,50 @@ namespace Quarry
                 },
                 hotKey = KeyBindingDefOf.Misc3
             };
-
+            /*
             if (base.GetGizmos() != null)
             {
+                Log.Message("do base.GetGizmos()");
                 foreach (Command c in base.GetGizmos())
                 {
+                    Log.Message(string.Format("base.GetGizmos() {0}",c));
                     yield return c;
                 }
             }
+            */
+
+            IEnumerator<Gizmo> enumerator = null;
+            if (((this.def.BuildableByPlayer && this.def.passability != Traversability.Impassable && !this.def.IsDoor) || this.def.building.forceShowRoomStats) && Gizmo_RoomStats.GetRoomToShowStatsFor(this) != null && Find.Selector.SingleSelectedObject == this)
+            {
+                yield return new Gizmo_RoomStats(this);
+            }
+            if (this.def.Minifiable && base.Faction == Faction.OfPlayer)
+            {
+                yield return InstallationDesignatorDatabase.DesignatorFor(this.def);
+            }
+            Command command = BuildCopyCommandUtility.BuildCopyCommand(this.def, base.Stuff);
+            if (command != null)
+            {
+                yield return command;
+            }
+            if (base.Faction == Faction.OfPlayer)
+            {
+                foreach (Command command2 in BuildFacilityCommandUtility.BuildFacilityCommands(this.def))
+                {
+                    yield return command2;
+                }
+                IEnumerator<Command> enumerator2 = null;
+            }
+            if (forbiddable!=null)
+            {
+                foreach (Gizmo item in forbiddable.CompGetGizmosExtra())
+                {
+                    yield return item;
+                }
+                ;
+            }
+            yield break;
+            Log.Message("post base.GetGizmos()");
         }
 
 
