@@ -387,8 +387,9 @@ namespace Quarry
                     return;
                 }
             }
-
+            Rand.PushState();
             int filthAmount = Rand.RangeInclusive(1, 100);
+            Rand.PopState();
             // If this cell isn't filthy enough, skip it
             if (filthAmount <= 20)
             {
@@ -405,7 +406,9 @@ namespace Quarry
                 // Check for chunks
                 if (filthAmount > 80)
                 {
+                    Rand.PushState();
                     GenSpawn.Spawn(ThingMaker.MakeThing(ChunksUnder.RandomElement()), c, Map);
+                    Rand.PopState();
                 }
             }
         }
@@ -431,7 +434,9 @@ namespace Quarry
             {
                 eventTriggered = true;
                 // The sinkhole damages the quarry a little
+                Rand.PushState();
                 QuarryMined(Rand.RangeInclusive(1, 3));
+                Rand.PopState();
             }
 
             // Cache values since this process is convoluted and the values need to remain the same
@@ -453,7 +458,10 @@ namespace Quarry
             // Try to give junk before resources. This simulates only mining chunks or useless rubble
             if (junkMined)
             {
-                if (Rand.Chance(QuarrySettings.chunkChance / 100f))
+                Rand.PushState();
+                bool junk = (Rand.Chance(QuarrySettings.chunkChance / 100f));
+                Rand.PopState();
+                if (junk)
                 {
                     return ChunksUnder.RandomElement();
                 }
@@ -468,6 +476,7 @@ namespace Quarry
             if (req == ResourceRequest.Resources)
             {
                 singleSpawn = false;
+
                 return OreDictionary.TakeOne();
             }
             // The quarry was most likely toggled off while a pawn was still working. Give junk

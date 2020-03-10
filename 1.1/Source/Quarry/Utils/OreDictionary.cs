@@ -7,14 +7,15 @@ using Verse;
 using UnityEngine;
 
 namespace Quarry {
+    [StaticConstructorOnStartup]
+    public static class OreDictionary
+    {
+        public const int MaxWeight = 1000;
 
-  public static class OreDictionary {
+        private static System.Random rand = new System.Random();
 
-		public const int MaxWeight = 1000;
-
-    private static System.Random rand = new System.Random();
-
-		private static SimpleCurve commonalityCurve = new SimpleCurve {
+		private static SimpleCurve commonalityCurve = new SimpleCurve
+        {
 			{ new CurvePoint(0.0f, 10f) },
 			{ new CurvePoint(0.02f, 9f) },
 			{ new CurvePoint(0.04f, 8f) },
@@ -23,16 +24,18 @@ namespace Quarry {
 			{ new CurvePoint(float.MaxValue, 1f) }
 		};
 
-		private static Predicate<ThingDef> validOre = (
-			(ThingDef def) => def.mineable && 
-			def != QuarryDefOf.MineableComponentsIndustrial &&
-			def.building != null && 
-			def.building.isResourceRock && 
-			def.building.mineableThing != null
+		private static Predicate<ThingDef> validOre = 
+        (
+		(ThingDef def) => def.mineable && 
+		def != QuarryDefOf.MineableComponentsIndustrial &&
+		def.building != null && 
+		def.building.isResourceRock && 
+		def.building.mineableThing != null
 		);
 
 
-		public static void Build() {
+		public static void Build()
+        {
 			List<ThingCountExposable> oreDictionary = new List<ThingCountExposable>();
 
 			// Get all ThingDefs that have mineable resources
@@ -83,51 +86,52 @@ namespace Quarry {
 		}
 
 
-    public static ThingDef TakeOne() {
-			// Make sure there is a dictionary to work from
-			if (QuarrySettings.oreDictionary == null) {
-				Build();
-			}
+        public static ThingDef TakeOne() {
+        // Make sure there is a dictionary to work from
+            if (QuarrySettings.oreDictionary == null) {
+				    Build();
+			    }
 
-			// Sorts the weight list
-			List<ThingCountExposable> sortedWeights = Sort(QuarrySettings.oreDictionary);
+			    // Sorts the weight list
+			    List<ThingCountExposable> sortedWeights = Sort(QuarrySettings.oreDictionary);
 
-      // Sums all weights
-      int sum = 0;
-			for (int i = 0; i < QuarrySettings.oreDictionary.Count; i++) {
-				sum += QuarrySettings.oreDictionary[i].count;
-			}
+              // Sums all weights
+              int sum = 0;
+			        for (int i = 0; i < QuarrySettings.oreDictionary.Count; i++) {
+				        sum += QuarrySettings.oreDictionary[i].count;
+			        }
 
-      // Randomizes a number from Zero to Sum
-      int roll = rand.Next(0, sum);
+            // Randomizes a number from Zero to Sum
+            Rand.PushState();
+              int roll = rand.Next(0, sum);
+            Rand.PopState();
+              // Finds chosen item based on weight
+              ThingDef selected = sortedWeights[sortedWeights.Count - 1].thingDef;
+			        for (int j = 0; j < sortedWeights.Count; j++) {
+				        if (roll < sortedWeights[j].count) {
+					        selected = sortedWeights[j].thingDef;
+					        break;
+				        }
+				        roll -= sortedWeights[j].count;
+			        }
 
-      // Finds chosen item based on weight
-      ThingDef selected = sortedWeights[sortedWeights.Count - 1].thingDef;
-			for (int j = 0; j < sortedWeights.Count; j++) {
-				if (roll < sortedWeights[j].count) {
-					selected = sortedWeights[j].thingDef;
-					break;
-				}
-				roll -= sortedWeights[j].count;
-			}
+              // Returns the selected item
+            return selected;
+        }
 
-      // Returns the selected item
-      return selected;
+
+        private static List<ThingCountExposable> Sort(List<ThingCountExposable> weights) {
+			    List<ThingCountExposable> list = new List<ThingCountExposable>(weights);
+
+          // Sorts the Weights List for randomization later
+          list.Sort(
+              delegate (ThingCountExposable firstPair,
+										    ThingCountExposable nextPair) {
+                        return firstPair.count.CompareTo(nextPair.count);
+                       }
+           );
+
+          return list;
+        }
     }
-
-
-    private static List<ThingCountExposable> Sort(List<ThingCountExposable> weights) {
-			List<ThingCountExposable> list = new List<ThingCountExposable>(weights);
-
-      // Sorts the Weights List for randomization later
-      list.Sort(
-          delegate (ThingCountExposable firstPair,
-										ThingCountExposable nextPair) {
-                    return firstPair.count.CompareTo(nextPair.count);
-                   }
-       );
-
-      return list;
-    }
-  }
 }
