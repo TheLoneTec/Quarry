@@ -11,6 +11,7 @@ namespace Quarry
 
         public static Texture2D DesignationQuarryResources = ContentFinder<Texture2D>.Get("Cupro/UI/Designators/QuarryResources", false);
         public static Texture2D DesignationQuarryBlocks = ContentFinder<Texture2D>.Get("Cupro/UI/Designators/QuarryBlocks", false);
+        public static Texture2D DesignationQuarryChunks = ContentFinder<Texture2D>.Get("Cupro/UI/Designators/QuarryChunks", false);
         public static Texture2D DesignationReclaimSoil = ContentFinder<Texture2D>.Get("Cupro/UI/Designators/ReclaimSoil", false);
         public static Texture2D DesignationHaul = ContentFinder<Texture2D>.Get("UI/Designators/Haul");
 
@@ -39,9 +40,11 @@ namespace Quarry
         public static string LabelResetList = "QRY_LabelResetList".Translate();
         public static string LabelMineBlocks = "QRY_LabelMineBlocks".Translate();
         public static string LabelReclaimSoil = "QRY_LabelReclaimSoil".Translate();
+        public static string LabelMineChunks = "QRY_LabelMineChunks".Translate();
 
         public static string DescriptionMineResources = "QRY_DescriptionMineResources".Translate();
         public static string DescriptionMineBlocks = "QRY_DescriptionMineBlocks".Translate();
+        public static string DescriptionMineChunks = "QRY_DescriptionMineChunks".Translate();
         public static string DescriptionReclaimSoil = "QRY_DescriptionReclaimSoil".Translate();
 
         public static string LetterLabel = "QRY_LetterLabel".Translate();

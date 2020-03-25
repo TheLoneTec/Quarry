@@ -149,7 +149,7 @@ namespace Quarry
                     ResourceRequest req = ResourceRequest.None;
 
                     // Use the mineModeToggle to determine the request
-                    req = (Quarry.mineModeToggle ? ResourceRequest.Resources : ResourceRequest.Blocks);
+                    req = (ResourceRequest)(((int)Quarry.mineModeToggle)+1);
 
                     MoteType mote = MoteType.None;
                     int stackCount = 1;

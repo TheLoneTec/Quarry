@@ -17,6 +17,13 @@ namespace Quarry
         Chunks
     }
 
+    public enum MiningMode
+    {
+        Resources,
+        Blocks,
+        Chunks
+    }
+
     public enum MoteType
     {
         None,
@@ -30,7 +37,7 @@ namespace Quarry
 
         #region Fields
         public bool autoHaul = true;
-        public bool mineModeToggle = true;
+        public MiningMode mineModeToggle = MiningMode.Resources;
 
         private float quarryPercent = 1f;
         private int jobsCompleted = 0;
@@ -210,7 +217,7 @@ namespace Quarry
             }
 
             Scribe_Values.Look(ref autoHaul, "QRY_boolAutoHaul", true);
-            Scribe_Values.Look(ref mineModeToggle, "QRY_mineMode", true);
+            Scribe_Values.Look<MiningMode>(ref mineModeToggle, "QRY_mineMode", MiningMode.Resources);
             Scribe_Values.Look(ref quarryPercent, "QRY_quarryPercent", 1f);
             Scribe_Values.Look(ref jobsCompleted, "QRY_jobsCompleted", 0);
             Scribe_Collections.Look(ref rockTypesUnder, "QRY_rockTypesUnder", LookMode.Value);
@@ -444,6 +451,16 @@ namespace Quarry
             bool junkMined = Rand.Chance(QuarrySettings.junkChance / 100f);
             Rand.PopState();
 
+            if (req == ResourceRequest.Chunks)
+            {
+                if (!junkMined)
+                {
+                    return ChunksUnder.RandomElement();
+                }
+                // The rock didn't break into a usable size, spawn rubble
+                mote = MoteType.Failure;
+                return ThingDefOf.Filth_RubbleRock;
+            }
             // Check for blocks first to prevent spawning chunks (these would just be cut into blocks)
             if (req == ResourceRequest.Blocks)
             {
@@ -518,19 +535,99 @@ namespace Quarry
         }
         #endregion MethodGroup_Quarry
 
-
         #region MethodGroup_Inspecting
+        public static FloatMenu MakeModeMenu(Building_Quarry __instance)
+        {
+            List<FloatMenuOption> floatMenu = new List<FloatMenuOption>();
+
+            if (__instance.mineModeToggle != MiningMode.Resources)
+            {
+                floatMenu.Add(new FloatMenuOption(Static.LabelMineResources, delegate ()
+                {
+                    __instance.mineModeToggle = MiningMode.Resources;
+                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+            }
+            if (__instance.mineModeToggle != MiningMode.Blocks && QuarryDefOf.Stonecutting.IsFinished)
+            {
+                floatMenu.Add(new FloatMenuOption(Static.LabelMineBlocks, delegate ()
+                {
+                    __instance.mineModeToggle = MiningMode.Blocks;
+                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+            }
+            if (__instance.mineModeToggle != MiningMode.Chunks)
+            {
+                floatMenu.Add(new FloatMenuOption(Static.LabelMineChunks, delegate ()
+                {
+                    __instance.mineModeToggle = MiningMode.Chunks;
+                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+            }
+
+            return new FloatMenu(floatMenu);
+        }
+        private Texture2D icon
+        {
+            get
+            {
+                switch (this.mineModeToggle)
+                {
+                    case MiningMode.Resources:
+                        return Static.DesignationQuarryResources;
+                    case MiningMode.Blocks:
+                        return Static.DesignationQuarryBlocks;
+                    case MiningMode.Chunks:
+                        return Static.DesignationQuarryChunks;
+                    default:
+                        return BaseContent.BadTex;
+                }
+            }
+        }
+        private string defaultLabel
+        {
+            get
+            {
+                switch (this.mineModeToggle)
+                {
+                    case MiningMode.Resources:
+                        return Static.LabelMineResources;
+                    case MiningMode.Blocks:
+                        return Static.LabelMineBlocks;
+                    case MiningMode.Chunks:
+                        return Static.LabelMineChunks;
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+        private string defaultDesc
+        {
+            get
+            {
+                switch (this.mineModeToggle)
+                {
+                    case MiningMode.Resources:
+                        return Static.DescriptionMineResources;
+                    case MiningMode.Blocks:
+                        return Static.DescriptionMineBlocks;
+                    case MiningMode.Chunks:
+                        return Static.DescriptionMineChunks;
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
         public override IEnumerable<Gizmo> GetGizmos()
         {
-
             Command_Action mineMode = new Command_Action()
             {
-                icon = (mineModeToggle ? Static.DesignationQuarryResources : Static.DesignationQuarryBlocks),
-                defaultLabel = (mineModeToggle ? Static.LabelMineResources : Static.LabelMineBlocks),
-                defaultDesc = (mineModeToggle ? Static.DescriptionMineResources : Static.DescriptionMineBlocks),
+                icon = this.icon,
+                defaultLabel = this.defaultLabel,
+                defaultDesc = defaultDesc,
                 hotKey = KeyBindingDefOf.Misc10,
                 activateSound = SoundDefOf.Click,
-                action = () => { mineModeToggle = !mineModeToggle; },
+                action = delegate ()
+                {
+                    Find.WindowStack.Add(MakeModeMenu(this));
+                },
             };
             // Only allow this option if stonecutting has been researched
             // The default behavior is to allow resources, but not blocks
