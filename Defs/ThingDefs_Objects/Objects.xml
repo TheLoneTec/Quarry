@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
+<DesignatorDropdownGroupDef>
+<defName>Dropdown_Cupro_Quarry</defName>
+</DesignatorDropdownGroupDef>
+
 	<ThingDef Name="QRY_QuarryBase" ParentName="BuildingBase" Abstract="True">
 		<graphicData>
 			<graphicClass>Graphic_Multi</graphicClass>
 		</graphicData>
+		<designatorDropdown>Dropdown_Cupro_Quarry</designatorDropdown>
 		<drawOffscreen>true</drawOffscreen>
 		<constructEffect>ConstructDirt</constructEffect>
 		<altitudeLayer>FloorEmplacement</altitudeLayer>

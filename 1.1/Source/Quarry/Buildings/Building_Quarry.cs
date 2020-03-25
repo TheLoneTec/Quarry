@@ -13,7 +13,8 @@ namespace Quarry
     {
         None,
         Resources,
-        Blocks
+        Blocks,
+        Chunks
     }
 
     public enum MoteType
@@ -429,18 +430,19 @@ namespace Quarry
                 QuarryMined();
             }
 
+            Rand.PushState();
             // Determine if the mining job resulted in a sinkhole event, based on game difficulty
             if (jobsCompleted % SinkholeFrequency == 0 && Rand.Chance(Find.Storyteller.difficulty.difficulty / 50f))
             {
                 eventTriggered = true;
                 // The sinkhole damages the quarry a little
-                Rand.PushState();
                 QuarryMined(Rand.RangeInclusive(1, 3));
-                Rand.PopState();
             }
-
+            Rand.PopState();
             // Cache values since this process is convoluted and the values need to remain the same
+            Rand.PushState();
             bool junkMined = Rand.Chance(QuarrySettings.junkChance / 100f);
+            Rand.PopState();
 
             // Check for blocks first to prevent spawning chunks (these would just be cut into blocks)
             if (req == ResourceRequest.Blocks)
