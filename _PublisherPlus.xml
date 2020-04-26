@@ -4,5 +4,6 @@
     <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Quarry\.git</exclude>
     <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Quarry\1.1\Source</exclude>
     <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Quarry\Source</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Quarry\Textures\Cupro\UI\Designators\Quarrys.psd</exclude>
   </Excluded>
 </Configuration>
