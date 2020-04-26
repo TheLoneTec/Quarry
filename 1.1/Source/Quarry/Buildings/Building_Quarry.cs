@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-
+using Multiplayer.API;
 using UnityEngine;
 using RimWorld;
 using Verse;
@@ -34,11 +34,10 @@ namespace Quarry
     [StaticConstructorOnStartup]
     public class Building_Quarry : Building
     {
-
         #region Fields
         public bool autoHaul = true;
         public MiningMode mineModeToggle = MiningMode.Resources;
-
+        
         private float quarryPercent = 1f;
         private int jobsCompleted = 0;
         private bool firstSpawn = false;
@@ -318,7 +317,6 @@ namespace Quarry
             }
         }
 
-
         public void TryUnassignPawn(Pawn pawn)
         {
             if (owners.Contains(pawn))
@@ -326,7 +324,6 @@ namespace Quarry
                 owners.Remove(pawn);
             }
         }
-
 
         public void SortOwners()
         {
@@ -544,26 +541,43 @@ namespace Quarry
             {
                 floatMenu.Add(new FloatMenuOption(Static.LabelMineResources, delegate ()
                 {
-                    __instance.mineModeToggle = MiningMode.Resources;
+                    MineModeResources(__instance);
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
             }
             if (__instance.mineModeToggle != MiningMode.Blocks && QuarryDefOf.Stonecutting.IsFinished)
             {
                 floatMenu.Add(new FloatMenuOption(Static.LabelMineBlocks, delegate ()
                 {
-                    __instance.mineModeToggle = MiningMode.Blocks;
+                    MineModeBlocks(__instance);
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
             }
             if (__instance.mineModeToggle != MiningMode.Chunks)
             {
                 floatMenu.Add(new FloatMenuOption(Static.LabelMineChunks, delegate ()
                 {
-                    __instance.mineModeToggle = MiningMode.Chunks;
+                    MineModeChunks(__instance);
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
             }
 
             return new FloatMenu(floatMenu);
         }
+        
+        [SyncMethod]
+        private static void MineModeResources(Building_Quarry __instance)
+        {
+            __instance.mineModeToggle = MiningMode.Resources;
+        }
+        [SyncMethod]
+        private static void MineModeBlocks(Building_Quarry __instance)
+        {
+            __instance.mineModeToggle = MiningMode.Blocks;
+        }
+        [SyncMethod]
+        private static void MineModeChunks(Building_Quarry __instance)
+        {
+            __instance.mineModeToggle = MiningMode.Chunks;
+        }
+
         private Texture2D icon
         {
             get
@@ -615,6 +629,14 @@ namespace Quarry
                 }
             }
         }
+
+        [SyncMethod]
+        private void ToggleAutoHaul()
+        {
+            autoHaul = !autoHaul;
+        }
+
+
         public override IEnumerable<Gizmo> GetGizmos()
         {
             Command_Action mineMode = new Command_Action()
@@ -645,7 +667,7 @@ namespace Quarry
                 hotKey = KeyBindingDefOf.Misc11,
                 activateSound = SoundDefOf.Click,
                 isActive = () => autoHaul,
-                toggleAction = () => { autoHaul = !autoHaul; },
+                toggleAction = () => ToggleAutoHaul(),
             };
 
             yield return new Command_Action

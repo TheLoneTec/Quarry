@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Multiplayer.API;
 using RimWorld;
 using Verse;
 using UnityEngine;
@@ -11,8 +11,6 @@ namespace Quarry {
     public static class OreDictionary
     {
         public const int MaxWeight = 1000;
-
-        private static System.Random rand = new System.Random();
 
 		private static SimpleCurve commonalityCurve = new SimpleCurve
         {
@@ -101,10 +99,20 @@ namespace Quarry {
 				        sum += QuarrySettings.oreDictionary[i].count;
 			        }
 
-            // Randomizes a number from Zero to Sum
-            Rand.PushState();
-              int roll = rand.Next(0, sum);
-            Rand.PopState();
+			// Randomizes a number from Zero to Sum
+			/*since there was a system rand here, calling verse.rand's push and pop state won't do anything.
+			 * so I'm getting rid of the system rand and replacing it with a verse rand. - Cody Spring*/
+			int roll;
+			if (MP.IsInMultiplayer)
+			{
+				Rand.PushState();
+				roll = Rand.Range(0, sum);
+				Rand.PopState();
+			}
+			else
+			{
+				roll = Rand.Range(0, sum);
+			}
               // Finds chosen item based on weight
               ThingDef selected = sortedWeights[sortedWeights.Count - 1].thingDef;
 			        for (int j = 0; j < sortedWeights.Count; j++) {

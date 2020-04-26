@@ -4,6 +4,7 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Multiplayer.API;
 
 namespace Quarry
 {
@@ -54,7 +55,6 @@ namespace Quarry
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-
             // Set up fail conditions
             this.FailOn(delegate
             {
@@ -99,7 +99,7 @@ namespace Quarry
             ticksToPickHit = Mathf.RoundToInt((120f / statValue));
         }
 
-
+        [SyncMethod]
         private Toil Mine()
         {
             return new Toil()
@@ -135,6 +135,7 @@ namespace Quarry
             }.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
         }
 
+        [SyncMethod]
         private Toil Collect()
         {
             return new Toil()
@@ -171,13 +172,32 @@ namespace Quarry
                     {
                         int sub = (int)(def.BaseMarketValue / 2f);
                         sub = Mathf.Clamp(sub, 0, 10);
-
-                        stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
+                        //patching rng for multiplayer - Cody Spring
+                        if (MP.IsInMultiplayer)
+                        {
+                            Rand.PushState();
+                            stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
+                            Rand.PopState();
+                        }
+                        else
+                        {
+                            stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
+                        }
                     }
 
                     if (def == ThingDefOf.ComponentIndustrial)
                     {
-                        stackCount += Random.Range(0, 1);
+                        //changing from UnityEngine random to Verse random and patching for multiplayer
+                        if (MP.IsInMultiplayer)
+                        {
+                            Rand.PushState();
+                            stackCount += Rand.Range(0, 1);
+                            Rand.PopState();
+                        }
+                        else
+                        {
+                            stackCount += Rand.Range(0, 1);
+                        }
                     }
 
                     haulableResult.stackCount = stackCount;
@@ -202,7 +222,18 @@ namespace Quarry
                         {
                             minHpThresh = Mathf.Clamp((float)haulableResult.TryGetComp<CompQuality>().Quality / 10f, 0.1f, 0.7f);
                         }
-                        int hp = Mathf.RoundToInt(Rand.Range(minHpThresh, 1f) * haulableResult.MaxHitPoints);
+                        //patching RNG for multiplayer - Cody Spring
+                        int hp;
+                        if(MP.IsInMultiplayer)
+                        {
+                            Rand.PushState();
+                            hp = Mathf.RoundToInt(Rand.Range(minHpThresh, 1f) * haulableResult.MaxHitPoints);
+                            Rand.PopState();
+                        }
+                        else
+                        {
+                            hp = Mathf.RoundToInt(Rand.Range(minHpThresh, 1f) * haulableResult.MaxHitPoints);
+                        }
                         hp = Mathf.Max(1, hp);
                         haulableResult.HitPoints = hp;
                     }
