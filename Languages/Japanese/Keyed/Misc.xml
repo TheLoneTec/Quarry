@@ -4,7 +4,7 @@
   <QRY_Quarry>Quarry</QRY_Quarry>
   <QRY_SettingsDepletionPercent>採掘作業数</QRY_SettingsDepletionPercent>
   <QRY_SettingsJunkChance>廃品率(鉄屑含): &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsJunkChance>
-  <QRY_SettingsResourceModifier>資源修正値: &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsResourceModifier>
+  <QRY_SettingsResourceModifier>資源採掘修正値: &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsResourceModifier>
   <QRY_SettingsChunkChance>岩塊率: &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsChunkChance>
   <QRY_DepletionLabel>採石場は次の回数を超えると採掘できなくなります：&lt;b&gt;&lt;color=orange&gt;{0}&lt;/color&gt;&lt;/b&gt;回</QRY_DepletionLabel>
   <QRY_DictionaryLabel>採掘可能アイテムと確率</QRY_DictionaryLabel>
