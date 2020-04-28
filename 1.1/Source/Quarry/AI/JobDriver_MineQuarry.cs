@@ -177,11 +177,13 @@ namespace Quarry
                         {
                             Rand.PushState();
                             stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
+                            stackCount = (int)(stackCount * QuarrySettings.resourceModifer);
                             Rand.PopState();
                         }
                         else
                         {
                             stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
+                            stackCount = (int)(stackCount * QuarrySettings.resourceModifer);
                         }
                     }
 

@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="Buildings\Building_Platform.cs" />
     <Compile Include="Buildings\Building_MiniQuarry.cs" />
+    <Compile Include="MultiplayerCompatibility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Static\Extensions.cs" />
     <Compile Include="Orders\Designator_ReclaimSoil.cs" />

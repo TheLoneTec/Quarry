@@ -99,21 +99,36 @@ namespace Quarry {
         list.Gap(25);
 
         {
-          Rect junkRect = list.GetRect(Text.LineHeight).LeftHalf().Rounded();
-          Rect junkSliderOffset = junkRect.RightHalf().Rounded().RightPartPixels(200);
+			Rect junkRect = list.GetRect(Text.LineHeight).LeftHalf().Rounded();
+			Rect junkSliderOffset = junkRect.RightHalf().Rounded().RightPartPixels(200);
 
-          Widgets.Label(junkRect, "QRY_SettingsJunkChance".Translate(QuarrySettings.junkChance));
-          QuarrySettings.junkChance = Widgets.HorizontalSlider(
-          junkSliderOffset,
-          QuarrySettings.junkChance, 0f, 100f, true).RoundToAsInt(5);
-          if (Mouse.IsOver(junkRect)) {
-            Widgets.DrawHighlight(junkRect);
-          }
-          TooltipHandler.TipRegion(junkRect, Static.ToolTipJunkChance);
+			Widgets.Label(junkRect, "QRY_SettingsJunkChance".Translate(QuarrySettings.junkChance));
+			QuarrySettings.junkChance = Widgets.HorizontalSlider(
+			junkSliderOffset,
+			QuarrySettings.junkChance, 0f, 100f, true).RoundToAsInt(5);
+			if (Mouse.IsOver(junkRect)) {
+			Widgets.DrawHighlight(junkRect);
+			}
+			TooltipHandler.TipRegion(junkRect, Static.ToolTipJunkChance);
 
-        }
+		}
+		{
+			Rect rescRect = list.GetRect(Text.LineHeight).RightHalf().Rounded();
+			Rect rescSliderOffset = rescRect.RightHalf().Rounded().RightPartPixels(200);
 
-        list.Gap(25);
+			Widgets.Label(rescRect, "QRY_SettingsResourceModifier".Translate(QuarrySettings.resourceModifer*100));
+			QuarrySettings.resourceModifer = Widgets.HorizontalSlider(
+			rescSliderOffset,
+			QuarrySettings.resourceModifer, 0.01f, 2f, true, roundTo: 0.01f);
+			if (Mouse.IsOver(rescRect))
+			{
+				Widgets.DrawHighlight(rescRect);
+			}
+			TooltipHandler.TipRegion(rescRect, Static.ToolTipResourceModifier);
+
+		}
+
+		list.Gap(25);
 
         {
           Rect chunkRect = list.GetRect(Text.LineHeight).LeftHalf().Rounded();

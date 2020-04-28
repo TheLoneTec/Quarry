@@ -12,6 +12,7 @@ namespace Quarry
         internal static int quarryMaxHealth = 2000;
         internal static int junkChance = 60;
         internal static int chunkChance = 50;
+        internal static float resourceModifer = 1f;
         internal static List<ThingCountExposable> oreDictionary = null;
         internal static List<ThingDef> database;
 
@@ -36,6 +37,7 @@ namespace Quarry
             Scribe_Values.Look(ref quarryMaxHealth, "QRY_quarryMaxHealth", 2000);
             Scribe_Values.Look(ref junkChance, "QRY_junkChance", 60);
             Scribe_Values.Look(ref chunkChance, "QRY_chunkChance", 50);
+            Scribe_Values.Look(ref resourceModifer, "QRY_resourceModifer", 1f);
             Scribe_Collections.Look(ref oreDictionary, "QRY_OreDictionary");
 
             // Remove all null entries in the oreDictionary

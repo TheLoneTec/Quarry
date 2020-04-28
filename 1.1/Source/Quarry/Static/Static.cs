@@ -54,6 +54,7 @@ namespace Quarry
         public static string ToolTipLetter = "QRY_TooltipLetter".Translate();
         public static string ToolTipJunkChance = "QRY_TooltipJunkChance".Translate();
         public static string ToolTipChunkChance = "QRY_TooltipChunkChance".Translate();
+        public static string ToolTipResourceModifier = "QRY_TooltipResourceModifier".Translate();
 
         public static string TextMote_LargeVein = "QRY_TextMote_LargeVein".Translate();
         public static string TextMote_MiningFailed = "QRY_TextMote_MiningFailed".Translate();
