@@ -43,7 +43,9 @@
     <Compile Include="Static\QuarryDefOf.cs" />
     <Compile Include="Buildings\Building_Quarry.cs" />
     <Compile Include="PlaceWorkers\PlaceWorker_Quarry.cs" />
+    <Compile Include="Utils\Class1.cs" />
     <Compile Include="Utils\QuarryGrid.cs" />
+    <None Include="Utils\QuarryMod.cs.bak" />
     <Compile Include="Utils\QuarryMod.cs" />
     <Compile Include="Utils\QuarryUtility.cs" />
     <Compile Include="Utils\QuarrySettings.cs" />
