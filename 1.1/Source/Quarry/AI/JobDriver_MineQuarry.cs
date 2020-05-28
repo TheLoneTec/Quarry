@@ -66,7 +66,7 @@ namespace Quarry
 
             // Mine at the quarry. This is only for the delay
             yield return Mine();
-
+            pawn.records.Increment(QuarryDefOf.QRY_CellsMined);
             // Collect resources from the quarry
             yield return Collect();
 
@@ -132,6 +132,7 @@ namespace Quarry
                 defaultDuration = (int)Mathf.Clamp(3000 / pawn.GetStatValue(StatDefOf.MiningSpeed, true), 500, 10000),
                 defaultCompleteMode = ToilCompleteMode.Delay,
                 handlingFacing = true
+                
             }.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
         }
 

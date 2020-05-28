@@ -11,7 +11,7 @@ namespace Quarry
         public static ThingDef QRY_MiniQuarry;
         public static ThingDef Chemfuel;
         public static ThingDef MineableComponentsIndustrial;
-
+        public static WorkTypeDef QuarryMining;
         public static TerrainDef QRY_QuarriedGround;
         public static TerrainDef QRY_QuarriedGroundWall;
 
