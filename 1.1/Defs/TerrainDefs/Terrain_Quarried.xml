@@ -52,8 +52,8 @@
 		<renderPrecedence>359</renderPrecedence>
 		<pathCost>2</pathCost>
 		<statBases>
-			<Beauty>-1</Beauty>
-			<Cleanliness>-1</Cleanliness>
+			<Beauty>-3</Beauty>
+			<Cleanliness>-3</Cleanliness>
 		</statBases>
 		<affordances>
 			<li>Light</li>
@@ -62,7 +62,7 @@
 			<li>GrowSoil</li>
 		</affordances>
 		<generatedFilth>Filth_Dirt</generatedFilth>
-		<fertility>0.7</fertility>
+		<fertility>0.25</fertility>
 		<takeFootprints>True</takeFootprints>
 		<ignoreConfigErrors>true</ignoreConfigErrors>
 	</TerrainDef>

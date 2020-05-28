@@ -248,7 +248,7 @@ namespace Quarry
 
                 CellRect rect = this.OccupiedRect();
                 // Remove this area from the quarry grid. Quarries can never be built here again
-                map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
+            //    map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
 
                 foreach (IntVec3 c in rect)
                 {
@@ -289,8 +289,20 @@ namespace Quarry
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             RemoveAllOwners();
-            foreach (IntVec3 c in GenAdj.CellsOccupiedBy(this))
+
+            CellRect rect = this.OccupiedRect();
+            // Remove this area from the quarry grid. Quarries can never be built here again
+            //     Map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
+
+            Log.Message("Quarry at "+ QuarryPercent+ " "+ (int)(rect.Count() * (QuarryPercent / 100)) + " of " + rect.Count()+" cells should retain their quarrability");
+            List<IntVec3> cells = GenAdj.CellsOccupiedBy(this).ToList();
+            for (int i = 0; i < cells.Count; i++)
             {
+                IntVec3 c = cells[i];
+                if (rect.Count() * (QuarryPercent / 100) == 0 || rect.Count() * (QuarryPercent / 100) < i)
+                {
+                    Map.GetComponent<QuarryGrid>().RemoveFromGrid(c);
+                }
                 // Change the terrain here back to quarried stone, removing the walls
                 Map.terrainGrid.SetTerrain(c, QuarryDefOf.QRY_QuarriedGround);
             }
