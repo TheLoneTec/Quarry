@@ -64,7 +64,7 @@ namespace Quarry
 
 			Rect topRect = rect.TopPart(0.25f);
 			Rect bottomRect = rect.BottomPart(0.75f);
-			Rect fullRect = list.GetRect(Text.LineHeight);
+			Rect fullRect = list.GetRect(Text.LineHeight).ContractedBy(4);
 			Rect leftRect = fullRect.LeftHalf().Rounded();
 			Rect rightRect = fullRect.RightHalf().Rounded();
 
@@ -75,9 +75,10 @@ namespace Quarry
 			{
 				listtop.ColumnWidth = rect.width / 2;
 				listtop.CheckboxLabeled(Static.LetterSent, ref QuarrySettings.letterSent, Static.ToolTipLetter);
+				listtop.CheckboxLabeled(Static.AllowRottable, ref QuarrySettings.allowRottable, Static.ToolTipAllowRottable);
+				listtop.NewColumn();
 				listtop.LabeledScrollbarSetting("QRY_SettingsJunkChance".Translate(QuarrySettings.junkChance), ref QuarrySettings.junkChance, Static.ToolTipJunkChance);
 				listtop.LabeledScrollbarSetting("QRY_SettingsChunkChance".Translate(QuarrySettings.chunkChance), ref QuarrySettings.chunkChance, Static.ToolTipChunkChance);
-				listtop.NewColumn();
 				listtop.LabeledScrollbarSetting("QRY_SettingsResourceModifier".Translate(QuarrySettings.resourceModifer * 100), ref QuarrySettings.resourceModifer, Static.ToolTipResourceModifier);
 			}
 			list.EndSection(listtop);

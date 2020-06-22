@@ -62,7 +62,7 @@ namespace Quarry {
 
 		public static IEnumerable<ThingDef> PossibleThingDefs() {
 			return from d in DefDatabase<ThingDef>.AllDefs
-						 where (d.category == ThingCategory.Item && d.scatterableOnMapGen && !d.destroyOnDrop && !d.MadeFromStuff && d.GetCompProperties<CompProperties_Rottable>() == null)
+						 where (d.category == ThingCategory.Item && d.scatterableOnMapGen && !d.destroyOnDrop && !d.MadeFromStuff && (d.GetCompProperties<CompProperties_Rottable>() == null || QuarrySettings.allowRottable))
 						 select d;
 		}
 	}

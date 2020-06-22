@@ -9,6 +9,7 @@ namespace Quarry
     {
 
         internal static bool letterSent = false;
+        internal static bool allowRottable = false;
         internal static int quarryMaxHealth = 2000;
         internal static int junkChance = 60;
         internal static int chunkChance = 50;
@@ -34,6 +35,7 @@ namespace Quarry
             base.ExposeData();
 
             Scribe_Values.Look(ref letterSent, "QRY_letterSent", false);
+            Scribe_Values.Look(ref allowRottable, "QRY_allowRottable", false);
             Scribe_Values.Look(ref quarryMaxHealth, "QRY_quarryMaxHealth", 2000);
             Scribe_Values.Look(ref junkChance, "QRY_junkChance", 60);
             Scribe_Values.Look(ref chunkChance, "QRY_chunkChance", 50);
