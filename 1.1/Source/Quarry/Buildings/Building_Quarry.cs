@@ -775,6 +775,16 @@ namespace Quarry
                     stringBuilder.AppendLine();
                 }
             }
+            if (Prefs.DevMode)
+            {
+                stringBuilder.AppendLine("Rock Types available: " + ChunksUnder.Count);
+                foreach (ThingDef item in ChunksUnder)
+                {
+
+                    stringBuilder.AppendLine("     "+item.LabelCap);
+                }
+                stringBuilder.AppendLine();
+            }
             return stringBuilder.ToString().TrimEndNewlines();
         }
         #endregion MethodGroup_Inspecting
