@@ -43,6 +43,9 @@
   <QRY_DescriptionReclaimSoil>採石場だったガタガタな石の地形を使用可能な土壌に変換します。</QRY_DescriptionReclaimSoil>
   <QRY_MessageMustDesignateQuarriedGround>採石場を指定してください。</QRY_MessageMustDesignateQuarriedGround>
 
+  <QRY_AllowRottable>回転アイテムを許可</QRY_AllowRottable>
+  <QRY_TooltipAllowRottable>回転可能なアイテムを採石場のリストに追加できるようにします</QRY_TooltipAllowRottable>
+
   <QRY_LabelAddThing>リストに追加</QRY_LabelAddThing>
   <QRY_LabelRemoveThing>リストから削除</QRY_LabelRemoveThing>
   <QRY_LabelResetList>リストを初期化</QRY_LabelResetList>
