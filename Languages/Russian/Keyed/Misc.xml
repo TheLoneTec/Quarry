@@ -6,10 +6,10 @@
 	<QRY_SettingsJunkChance>Шанс добычи мусора (включая обломки): &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsJunkChance>
 	<QRY_SettingsResourceModifier>Модификатор ресурсов: &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsResourceModifier>
 	<QRY_SettingsChunkChance>Шанс добычи обломка: &lt;b&gt;&lt;color=orange&gt;{0}%&lt;/color&gt;&lt;/b&gt;</QRY_SettingsChunkChance>
-	<QRY_DepletionLabel>&lt;b&gt;&lt;color=orange&gt;{0}&lt;/color&gt;&lt;/b&gt; количество операций по добыче прежде, чем карьер истощится</QRY_DepletionLabel>
+	<QRY_DepletionLabel>&lt;b&gt;&lt;color=orange&gt;{0}&lt;/color&gt;&lt;/b&gt; количество операций по добыче до истощения карьера</QRY_DepletionLabel>
 	<QRY_DictionaryLabel>Добываемые предметы и шансы</QRY_DictionaryLabel>
 	
-	<QRY_TooltipLetter>Определяет отправку письма о восстановлении почвы. Если выключено, сообщение будет отправлено при первой разборке карьера.</QRY_TooltipLetter>
+	<QRY_TooltipLetter>Определяет отправку сообщения о восстановлении почвы. Если выключено, сообщение будет отправлено при первой разборке карьера.</QRY_TooltipLetter>
 	<QRY_TooltipJunkChance>Шанс добыть мусор. Если мусор не добыт, то будет выкопан случайный ресурс..</QRY_TooltipJunkChance>
 	<QRY_TooltipResourceModifier>Модификатор, применяемый к добытым ресурсам</QRY_TooltipResourceModifier>
 	<QRY_TooltipChunkChance>Шанс добыть обломок. Если выкопан хлам, появляется шанс добыть обломок вместо мусора. \n\nMining blocks uses chunk chance to determine whether a sufficient amount of stone was mined to make blocks</QRY_TooltipChunkChance>
@@ -31,7 +31,7 @@
 	<QRY_InspectQuarryPercent>Процент выработки карьера</QRY_InspectQuarryPercent>
 	<QRY_CommandBedSetOwnerLabel>Назначить владельца</QRY_CommandBedSetOwnerLabel>
 	<QRY_CommandSetOwnerDesc>Назначить этот карьер только для определённых колонистов.</QRY_CommandSetOwnerDesc>
-	<QRY_ReportGizmoLackingResearch>Требуется иследованныя обработка камня.</QRY_ReportGizmoLackingResearch>
+	<QRY_ReportGizmoLackingResearch>Требуется иследованная обработка камня.</QRY_ReportGizmoLackingResearch>
 	
 	<QRY_TextMote_LargeVein>Большая жила!</QRY_TextMote_LargeVein>
 	<QRY_TextMote_MiningFailed>Провал...</QRY_TextMote_MiningFailed>
@@ -44,7 +44,7 @@
 	<QRY_MessageMustDesignateQuarriedGround>Нужно назначить разрабатываемую поверхность.</QRY_MessageMustDesignateQuarriedGround>
 
 	<QRY_AllowRottable>Разрешить гнилое</QRY_AllowRottable>
-	<QRY_TooltipAllowRottable>ПОзволяет добавлять гниющие предметы в список для карьера</QRY_TooltipAllowRottable>
+	<QRY_TooltipAllowRottable>Позволяет добавлять гниющие предметы в список для карьера</QRY_TooltipAllowRottable>
 	
 	<QRY_LabelAddThing>Добавить в список</QRY_LabelAddThing>
 	<QRY_LabelRemoveThing>Убрать из списка</QRY_LabelRemoveThing>
