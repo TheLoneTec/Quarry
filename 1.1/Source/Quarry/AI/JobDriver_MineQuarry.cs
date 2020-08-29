@@ -106,8 +106,13 @@ namespace Quarry
             {
                 tickAction = delegate
                 {
+                    ResourceRequest req = (ResourceRequest)(((int)Quarry.mineModeToggle) + 1);
                     pawn.rotationTracker.Face(Quarry.Position.ToVector3Shifted());
+                    int basetime = 3000;
+                    if (req == ResourceRequest.Chunks)
+                    {
 
+                    }
                     if (ticksToPickHit < -100)
                     {
                         ResetTicksToPickHit();
@@ -179,28 +184,29 @@ namespace Quarry
                         {
                             Rand.PushState();
                             stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
-                            stackCount = (int)(stackCount * QuarrySettings.resourceModifer);
+                            stackCount = (int)((stackCount * QuarrySettings.resourceModifer) * GetActor().GetStatValue(StatDefOf.MiningYield));
                             Rand.PopState();
                         }
                         else
                         {
                             stackCount += Mathf.Min(Rand.RangeInclusive(15 - sub, 40 - (sub * 2)), def.stackLimit - 1);
-                            stackCount = (int)(stackCount * QuarrySettings.resourceModifer);
+                            stackCount = (int)((stackCount * QuarrySettings.resourceModifer) * GetActor().GetStatValue(StatDefOf.MiningYield));
                         }
                     }
 
-                    if (def == ThingDefOf.ComponentIndustrial)
+                    if (def == ThingDefOf.ComponentIndustrial || def == ThingDefOf.ComponentSpacer)
                     {
+                        int limit = def == ThingDefOf.ComponentIndustrial ? 2 : 1;
                         //changing from UnityEngine random to Verse random and patching for multiplayer
                         if (MP.IsInMultiplayer)
                         {
                             Rand.PushState();
-                            stackCount += Rand.Range(0, 1);
+                            stackCount += Rand.Range(0, limit);
                             Rand.PopState();
                         }
                         else
                         {
-                            stackCount += Rand.Range(0, 1);
+                            stackCount += Rand.Range(0, limit);
                         }
                     }
 

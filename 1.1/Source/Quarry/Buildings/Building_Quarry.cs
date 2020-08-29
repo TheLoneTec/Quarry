@@ -379,11 +379,11 @@ namespace Quarry
             blocksUnder = new List<ThingDef>();
             foreach (string str in stringList)
             {
-                if (QuarryUtility.IsValidQuarryChunk(str, out ThingDef chunk))
+                if (QuarryUtility.IsValidQuarryChunk(str, out ThingDef chunk) && !chunksUnder.Contains(chunk))
                 {
                     chunksUnder.Add(chunk);
                 }
-                if (QuarryUtility.IsValidQuarryBlocks(str, out ThingDef blocks))
+                if (QuarryUtility.IsValidQuarryBlocks(str, out ThingDef blocks) && !blocksUnder.Contains(blocks))
                 {
                     blocksUnder.Add(blocks);
                 }
@@ -780,8 +780,7 @@ namespace Quarry
                 stringBuilder.AppendLine("Rock Types available: " + ChunksUnder.Count);
                 foreach (ThingDef item in ChunksUnder)
                 {
-
-                    stringBuilder.AppendLine("     "+item.LabelCap);
+                    stringBuilder.AppendLine("     " + item.LabelCap);
                 }
                 stringBuilder.AppendLine();
             }
