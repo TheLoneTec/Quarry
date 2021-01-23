@@ -253,7 +253,38 @@ namespace Quarry
                 foreach (IntVec3 c in rect)
                 {
                     // What type of terrain are we over?
-                    string rockType = c.GetTerrain(Map).defName.Split('_').First();
+                    TerrainDef td = c.GetTerrain(Map);
+                    // Original method, problem here is that mods that use prefixes like Alpha Biomes "AB_" trigger the split and only pass the prefix, not the defname
+                    //    string rockType = td.defName.Split('_').First();
+                    // this seems like a better method, mods with prfixes are a little easier to handle stone from
+                    string rockType = td.defName;
+                    if (rockType.EndsWith("_Rough"))
+                    {
+                        rockType = rockType.Replace("_Rough", "");
+                    }
+                    else
+                    if (rockType.EndsWith("_RoughHewn"))
+                    {
+                        rockType = rockType.Replace("_RoughHewn", "");
+                    }
+                    else
+                    if (rockType.EndsWith("_Smooth"))
+                    {
+                        rockType = rockType.Replace("_Smooth", "");
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    //   crappy alpha biomes compatability, gotta be a better method
+                    if (rockType.StartsWith("GU_"))
+                    {
+                        rockType = rockType.Replace("GU_", "");
+                    }
+                    if (rockType.StartsWith("AB_"))
+                    {
+                        rockType = rockType.Replace("AB_", "");
+                    }
                     // If this is a valid rock type, add it to the list
                     if (QuarryUtility.IsValidQuarryRock(rockType))
                     {
@@ -294,7 +325,7 @@ namespace Quarry
             // Remove this area from the quarry grid. Quarries can never be built here again
             //     Map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
 
-            Log.Message("Quarry at "+ QuarryPercent+ " "+ (int)(rect.Count() * (QuarryPercent / 100)) + " of " + rect.Count()+" cells should retain their quarrability");
+        //    Log.Message("Quarry at "+ QuarryPercent+ " "+ (int)(rect.Count() * (QuarryPercent / 100)) + " of " + rect.Count()+" cells should retain their quarrability");
             List<IntVec3> cells = GenAdj.CellsOccupiedBy(this).ToList();
             for (int i = 0; i < cells.Count; i++)
             {
@@ -693,17 +724,6 @@ namespace Quarry
                 },
                 hotKey = KeyBindingDefOf.Misc3
             };
-            /*
-            if (base.GetGizmos() != null)
-            {
-                Log.Message("do base.GetGizmos()");
-                foreach (Command c in base.GetGizmos())
-                {
-                    Log.Message(string.Format("base.GetGizmos() {0}",c));
-                    yield return c;
-                }
-            }
-            */
 
             IEnumerator<Gizmo> enumerator = null;
             if (((this.def.BuildableByPlayer && this.def.passability != Traversability.Impassable && !this.def.IsDoor) || this.def.building.forceShowRoomStats) && Gizmo_RoomStats.GetRoomToShowStatsFor(this) != null && Find.Selector.SingleSelectedObject == this)
@@ -736,7 +756,6 @@ namespace Quarry
                 ;
             }
             yield break;
-            Log.Message("post base.GetGizmos()");
         }
 
 
@@ -746,18 +765,18 @@ namespace Quarry
             stringBuilder.AppendLine(Static.InspectQuarryPercent + ": " + QuarryPercent.ToStringDecimalIfSmall() + "%");
             if (PlayerCanSeeOwners)
             {
-                stringBuilder.AppendLine("ForColonistUse".Translate());
+            //    stringBuilder.AppendLine("ForColonistUse".Translate());
                 if (owners.Count == 0)
                 {
-                    stringBuilder.AppendLine("Owner".Translate() + ": " + "Nobody".Translate().ToLower());
+                    stringBuilder.AppendLine("QRY_RestrictedTo".Translate() + ": " + "Nobody".Translate().ToLower());
                 }
                 else if (owners.Count == 1)
                 {
-                    stringBuilder.AppendLine("Owner".Translate() + ": " + owners[0].Label);
+                    stringBuilder.AppendLine("QRY_RestrictedTo".Translate() + ": " + owners[0].Label);
                 }
                 else
                 {
-                    stringBuilder.Append("Owners".Translate() + ": ");
+                    stringBuilder.Append("QRY_RestrictedTo".Translate() + ": ");
                     bool conjugate = false;
                     for (int i = 0; i < OwnerInspectCount; i++)
                     {
@@ -777,15 +796,24 @@ namespace Quarry
             }
             if (Prefs.DevMode)
             {
-                stringBuilder.AppendLine("Rock Types available: " + ChunksUnder.Count);
-                foreach (ThingDef item in ChunksUnder)
+                List<string> report = new List<string>();
+                for (int i = 0; i < rockTypesUnder.Count; i++)
                 {
-                    stringBuilder.AppendLine("     " + item.LabelCap);
+                    if (!report.Contains(rockTypesUnder[i]))
+                    {
+                        report.Add(rockTypesUnder[i]);
+                    }
+                }
+                stringBuilder.AppendLine("Rock Types available: " + report.Count);
+                foreach (string item in report)
+                {
+                    stringBuilder.AppendLine("     " + item.CapitalizeFirst());
                 }
                 stringBuilder.AppendLine();
             }
             return stringBuilder.ToString().TrimEndNewlines();
         }
+
         #endregion MethodGroup_Inspecting
         #endregion MethodGroup_Root
     }

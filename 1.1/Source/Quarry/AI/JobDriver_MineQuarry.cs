@@ -173,9 +173,9 @@ namespace Quarry
                         // This shouldn't happen at all, but if it does let's add a little reward instead of just giving rubble
                         def = ThingDefOf.ChunkSlagSteel;
                     }
-
+                    bool component = def == ThingDefOf.ComponentIndustrial || def == ThingDefOf.ComponentSpacer;
                     Thing haulableResult = ThingMaker.MakeThing(def);
-                    if (!singleSpawn && def != ThingDefOf.ComponentIndustrial)
+                    if (!singleSpawn && !component)
                     {
                         int sub = (int)(def.BaseMarketValue / 2f);
                         sub = Mathf.Clamp(sub, 0, 10);
@@ -194,9 +194,9 @@ namespace Quarry
                         }
                     }
 
-                    if (def == ThingDefOf.ComponentIndustrial || def == ThingDefOf.ComponentSpacer)
+                    if (component)
                     {
-                        int limit = def == ThingDefOf.ComponentIndustrial ? 2 : 1;
+                        int limit = def == ThingDefOf.ComponentIndustrial ? 5 : 1;
                         //changing from UnityEngine random to Verse random and patching for multiplayer
                         if (MP.IsInMultiplayer)
                         {

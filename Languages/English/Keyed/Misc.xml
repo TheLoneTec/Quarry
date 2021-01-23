@@ -49,6 +49,7 @@
 	<QRY_LabelAddThing>Add to list</QRY_LabelAddThing>
 	<QRY_LabelRemoveThing>Remove from list</QRY_LabelRemoveThing>
 	<QRY_LabelResetList>Reset list</QRY_LabelResetList>
+	<QRY_RestrictedTo>Restricted to</QRY_RestrictedTo>
 	
 	<QRY_MessageSinkhole>Shifting rocks in the quarry have injured {0}.</QRY_MessageSinkhole>
 
