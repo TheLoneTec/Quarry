@@ -762,6 +762,7 @@ namespace Quarry
         public override string GetInspectString()
         {
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(base.GetInspectString());
             stringBuilder.AppendLine(Static.InspectQuarryPercent + ": " + QuarryPercent.ToStringDecimalIfSmall() + "%");
             if (PlayerCanSeeOwners)
             {
