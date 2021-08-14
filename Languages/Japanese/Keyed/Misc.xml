@@ -49,6 +49,7 @@
   <QRY_LabelAddThing>リストに追加</QRY_LabelAddThing>
   <QRY_LabelRemoveThing>リストから削除</QRY_LabelRemoveThing>
   <QRY_LabelResetList>リストを初期化</QRY_LabelResetList>
+  <QRY_RestrictedTo>制限:</QRY_RestrictedTo>
 
   <QRY_MessageSinkhole>採石場の岩塊を運ぶ際に {0} が怪我をしました。</QRY_MessageSinkhole>
 
