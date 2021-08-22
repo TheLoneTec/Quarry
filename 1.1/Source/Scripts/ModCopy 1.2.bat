@@ -1,0 +1,1 @@
+robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Quarry" "C:\Program Files (x86)\Steam\steamapps\common\RimWorld1.2\Mods\Quarry" /MIR /xd .git /xf "*.zip" "*.7z" "*.psd" "*.psb" "*.md" ".gitattributes" ".gitignore" "LICENSE"
