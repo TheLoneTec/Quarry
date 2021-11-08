@@ -13,7 +13,8 @@ namespace Quarry
 		
 		private Vector2 scrollPosition = Vector2.zero;
 		private float scrollViewHeight = 0f;
-
+		private string baseTimeBuffer;
+		private string varTimeBuffer;
 
 		public QuarryMod(ModContentPack mcp) : base(mcp) 
 		{
@@ -73,13 +74,14 @@ namespace Quarry
 			list.QuarryHealthSetting();
 			Listing_Standard listtop = list.BeginSection(topRect.height, true);
 			{
-				listtop.ColumnWidth = rect.width / 2;
+				listtop.ColumnWidth = fullRect.width * 0.488f;
 				listtop.CheckboxLabeled(Static.LetterSent, ref QuarrySettings.letterSent, Static.ToolTipLetter);
 				listtop.CheckboxLabeled(Static.AllowRottable, ref QuarrySettings.allowRottable, Static.ToolTipAllowRottable);
 				listtop.NewColumn();
 				listtop.LabeledScrollbarSetting("QRY_SettingsJunkChance".Translate(QuarrySettings.junkChance), ref QuarrySettings.junkChance, Static.ToolTipJunkChance);
 				listtop.LabeledScrollbarSetting("QRY_SettingsChunkChance".Translate(QuarrySettings.chunkChance), ref QuarrySettings.chunkChance, Static.ToolTipChunkChance);
-				listtop.LabeledScrollbarSetting("QRY_SettingsResourceModifier".Translate(QuarrySettings.resourceModifer * 100), ref QuarrySettings.resourceModifer, Static.ToolTipResourceModifier);
+				listtop.TextFieldNumericLabeled("QRY_SettingsMineTimeBase".Translate(QuarrySettings.mineTicksAverage), ref QuarrySettings.mineTicksAverage, ref baseTimeBuffer, 30, tooltip: Static.ToolTipTicksAverage);
+				listtop.TextFieldNumericLabeled("QRY_SettingsMineTimeVar".Translate(QuarrySettings.mineTicksVariance), ref QuarrySettings.mineTicksVariance, ref varTimeBuffer, 0, QuarrySettings.mineTicksAverage * 0.9f, tooltip: Static.ToolTipTicksVariance);
 			}
 			list.EndSection(listtop);
 			/*
@@ -210,6 +212,29 @@ namespace Quarry
 				}
 
 				}
+		}
+	}
+
+	public static class QuarryWidgets
+    {
+		public static void TextFieldNumericLabeled<T>(this Listing_Standard listing, string label, ref T val, ref string buffer, float min = 0f, float max = 1E+09f, string tooltip = null, float textpart = 0.75f, float boxpart = 0.25f) where T : struct
+		{
+			TextFieldNumericLabeled<T>(listing.GetRect(Text.LineHeight), label, ref val, ref buffer, min, max, tooltip, textpart, boxpart);
+			listing.Gap(listing.verticalSpacing);
+		}
+		public static void TextFieldNumericLabeled<T>(Rect rect, string label, ref T val, ref string buffer, float min = 0f, float max = 1E+09f, string tooltip = null, float textpart = 0.75f, float boxpart = 0.25f) where T : struct
+		{
+			Rect rect2 = rect.LeftPart(textpart).Rounded();
+			Rect rect3 = rect.RightPart(boxpart).Rounded();
+			TextAnchor anchor = Text.Anchor;
+			Text.Anchor = TextAnchor.MiddleLeft;
+			Widgets.Label(rect2, label);
+			if (tooltip != null)
+			{
+				TooltipHandler.TipRegion(rect2, tooltip);
 			}
+			Text.Anchor = anchor;
+			Widgets.TextFieldNumeric(rect3, ref val, ref buffer, min, max);
+		}
 	}
 }

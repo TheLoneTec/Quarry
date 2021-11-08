@@ -102,13 +102,15 @@ namespace Quarry
         [SyncMethod]
         private Toil Mine()
         {
+            int time = QuarrySettings.mineTicksAverage;
+            int min = Mathf.Max(time - QuarrySettings.mineTicksVariance, 30);
+            int max = time + QuarrySettings.mineTicksVariance;
             return new Toil()
             {
                 tickAction = delegate
                 {
                     ResourceRequest req = (ResourceRequest)(((int)Quarry.mineModeToggle) + 1);
                     pawn.rotationTracker.Face(Quarry.Position.ToVector3Shifted());
-                    int basetime = 3000;
                     if (req == ResourceRequest.Chunks)
                     {
 
@@ -134,7 +136,7 @@ namespace Quarry
                         ResetTicksToPickHit();
                     }
                 },
-                defaultDuration = (int)Mathf.Clamp(3000 / pawn.GetStatValue(StatDefOf.MiningSpeed, true), 500, 10000),
+                defaultDuration = (int)Mathf.Clamp(time / pawn.GetStatValue(StatDefOf.MiningSpeed, true), min, max),
                 defaultCompleteMode = ToilCompleteMode.Delay,
                 handlingFacing = true,
                 activeSkill = (() => SkillDefOf.Mining)
