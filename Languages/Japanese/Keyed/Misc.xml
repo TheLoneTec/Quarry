@@ -14,6 +14,11 @@
   <QRY_TooltipResourceModifier>採掘された資源に適用される修正値</QRY_TooltipResourceModifier>
   <QRY_TooltipChunkChance>岩塊を採掘する確率。鉄屑が採掘されていた場合、これは瓦礫の代わりに岩塊を得るチャンスです。\n\n採掘ブロックは岩塊を使って石材ブロックを作るのに十分な量の石塊が採掘されたかどうかを判断します</QRY_TooltipChunkChance>
 
+  <QRY_SettingsMineTimeBase>基本採掘Ticks</QRY_SettingsMineTimeBase>
+  <QRY_SettingsMineTimeVar>変動最大Ticks</QRY_SettingsMineTimeVar>
+  <QRY_ToolTipTicksAverage>採掘操作毎の基本時間(ticksで)</QRY_ToolTipTicksAverage>
+  <QRY_ToolTipTicksVariance>この数値が大きいほど、ポーンの採掘スキルが採掘時間に与える影響が大きくなります。</QRY_ToolTipTicksVariance>
+
   <QRY_LabelHaulMode>運搬モード</QRY_LabelHaulMode>
   <QRY_Haul>掘リ出したアイテムを運搬します。</QRY_Haul>
   <QRY_NotHaul>掘り出したアイテムを無視します。</QRY_NotHaul>
