@@ -19,7 +19,7 @@ namespace Quarry {
 
 		public static bool IsValidQuarryRock(string str) {
 			if (QuarrySettings.database.NullOrEmpty()) {
-				Log.Error("Quarry:: Trying to validate rock types before the database has been built.");
+                Log.Error("Quarry:: Trying to validate rock types before the database has been built.");
 				return false;
 			}
 			string prefix = string.Empty;
