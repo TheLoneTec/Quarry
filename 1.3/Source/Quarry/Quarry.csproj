@@ -50,6 +50,8 @@
     <Compile Include="PlaceWorkers\PlaceWorker_Quarry.cs" />
     <Compile Include="Utils\ExtentionMethods.cs" />
     <Compile Include="Utils\QuarryGrid.cs" />
+    <Compile Include="Utils\QuarryRockType.cs" />
+    <Compile Include="Utils\QuarryWidgets.cs" />
     <None Include="Utils\QuarryMod.cs.bak" />
     <Compile Include="Utils\QuarryMod.cs" />
     <Compile Include="Utils\QuarryUtility.cs" />
