@@ -49,10 +49,10 @@ namespace Quarry {
 			foreach (var modDef in modDefs)
 			{
 				string rockType = QuarryUtility.RockType(modDef.terrainTag);
-				ThingDef rockDef = rockDefs.Find(x => x.defName.Contains(rockType));
+				ThingDef rockDef = modDef.rockDef ?? rockDefs.Find(x => x.defName.Contains(rockType));
 				//	Log.Message($"Quarry: Checking modDef: {modDef} ");
-				ThingDef chunkDef = chunkDefs.Find(x => x.defName.Contains(rockType));
-				ThingDef blockDef = blockDefs.Find(x => x.defName.Contains(rockType));
+				ThingDef chunkDef = modDef.chunkDef ?? chunkDefs.Find(x => x.defName.Contains(rockType));
+				ThingDef blockDef = modDef.blockDef ?? blockDefs.Find(x => x.defName.Contains(rockType));
 				if (chunkDef == null && rockDef != null)
 				{
 					chunkDef = rockDef.building.mineableThing;
