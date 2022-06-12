@@ -51,13 +51,16 @@ namespace Quarry
         public static string LetterText = "QRY_LetterText".Translate();
         public static string LetterSent = "QRY_LetterSentQuery".Translate();
         public static string AllowRottable = "QRY_AllowRottable".Translate();
+        public static string PlaceAnywhere = "QRY_PlaceAnywhere".Translate();
 
         public static string ToolTipLetter = "QRY_TooltipLetter".Translate();
         public static string ToolTipJunkChance = "QRY_TooltipJunkChance".Translate();
         public static string ToolTipChunkChance = "QRY_TooltipChunkChance".Translate();
         public static string ToolTipResourceModifier = "QRY_TooltipResourceModifier".Translate();
         public static string ToolTipAllowRottable = "QRY_TooltipAllowRottable".Translate();
+        public static string ToolTipPlaceAnywhere = "QRY_TooltipPlaceAnywhere".Translate();
 
+        public static string ToolTipTicksReclaimedSoilFertility = "QRY_ToolTipReclaimedSoilFertility".Translate();
         public static string ToolTipTicksAverage = "QRY_ToolTipTicksAverage".Translate();
         public static string ToolTipTicksVariance = "QRY_ToolTipTicksVariance".Translate();
 

@@ -257,36 +257,9 @@ namespace Quarry
                     // Original method, problem here is that mods that use prefixes like Alpha Biomes "AB_" trigger the split and only pass the prefix, not the defname
                     //    string rockType = td.defName.Split('_').First();
                     // this seems like a better method, mods with prfixes are a little easier to handle stone from
-                    string rockType = td.defName;
-                    if (rockType.EndsWith("_Rough"))
-                    {
-                        rockType = rockType.Replace("_Rough", "");
-                    }
-                    else
-                    if (rockType.EndsWith("_RoughHewn"))
-                    {
-                        rockType = rockType.Replace("_RoughHewn", "");
-                    }
-                    else
-                    if (rockType.EndsWith("_Smooth"))
-                    {
-                        rockType = rockType.Replace("_Smooth", "");
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                    //   crappy alpha biomes compatability, gotta be a better method
-                    if (rockType.StartsWith("GU_"))
-                    {
-                        rockType = rockType.Replace("GU_", "");
-                    }
-                    if (rockType.StartsWith("AB_"))
-                    {
-                        rockType = rockType.Replace("AB_", "");
-                    }
+                    string rockType = QuarryUtility.RockType(td.defName);
                     // If this is a valid rock type, add it to the list
-                    if (QuarryUtility.IsValidQuarryRock(rockType))
+                    if (QuarryUtility.IsValidQuarryRock(td))
                     {
                         rockTypesUnder.Add(rockType);
                     }
@@ -397,8 +370,10 @@ namespace Quarry
             // This will cause an error if there still isn't a list, so make a new one using known rocks
             if (list.Count <= 0)
             {
-                Log.Warning("Quarry:: No valid rock types were found in the map. Building list using vanilla rocks.");
-                list = new List<string>() { "Sandstone", "Limestone", "Granite", "Marble", "Slate" };
+                Log.Warning($"Quarry:: No valid rock types were found in the map. Building list using {tempRockTypesUnder.Count} known rocks.");
+                Rand.PushState();
+                list = !QuarrySettings.quarryableStone.NullOrEmpty() ? QuarrySettings.quarryableStone.Keys.Take(tempRockTypesUnder.Count).ToList() : new List<string>() { "Sandstone", "Limestone", "Granite", "Marble", "Slate" };
+                Rand.PopState();
             }
             return list;
         }
@@ -410,13 +385,17 @@ namespace Quarry
             blocksUnder = new List<ThingDef>();
             foreach (string str in stringList)
             {
-                if (QuarryUtility.IsValidQuarryChunk(str, out ThingDef chunk) && !chunksUnder.Contains(chunk))
+                if (!QuarrySettings.quarryableStone.NullOrEmpty() && QuarrySettings.quarryableStone.TryGetValue(str, out QuarryRockType rockType))
                 {
-                    chunksUnder.Add(chunk);
-                }
-                if (QuarryUtility.IsValidQuarryBlocks(str, out ThingDef blocks) && !blocksUnder.Contains(blocks))
-                {
-                    blocksUnder.Add(blocks);
+                //    Log.Message($"using new database with {QuarrySettings.quarryableStone.Count} entries, searing for {str}");
+                    if (rockType.chunkDef != null && !chunksUnder.Contains(rockType.chunkDef))
+                    {
+                        chunksUnder.Add(rockType.chunkDef);
+                    }
+                    if (rockType.blockDef != null && !blocksUnder.Contains(rockType.blockDef))
+                    {
+                        blocksUnder.Add(rockType.blockDef);
+                    }
                 }
             }
         }

@@ -51,6 +51,12 @@
 	<QRY_AllowRottable>Allow Rottable</QRY_AllowRottable>
 	<QRY_TooltipAllowRottable>Allows rottable items to be added to the quarry list</QRY_TooltipAllowRottable>
 	
+	<QRY_SettingsReclaimedSoilFertility>Reclaimed Soil Fertility</QRY_SettingsReclaimedSoilFertility>
+	<QRY_TooltipReclaimedSoilFertility>Controls the fertility of reclaimed soil.</QRY_TooltipReclaimedSoilFertility>
+	
+	<QRY_PlaceAnywhere>Place Anywhere</QRY_PlaceAnywhere>
+	<QRY_TooltipPlaceAnywhere>Allows quarries to be placed reguardless of quarryable resources.</QRY_TooltipPlaceAnywhere>
+	
 	<QRY_LabelAddThing>Add to list</QRY_LabelAddThing>
 	<QRY_LabelRemoveThing>Remove from list</QRY_LabelRemoveThing>
 	<QRY_LabelResetList>Reset list</QRY_LabelResetList>

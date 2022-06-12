@@ -15,7 +15,7 @@ namespace Quarry
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
         {
             // God Mode allows placing the quarry without the grid restriction
-            if (!DebugSettings.godMode)
+            if (!DebugSettings.godMode && !QuarrySettings.placeAnywhere)
             {
                 int occCells = 0;
                 int rockCells = 0;
@@ -42,7 +42,7 @@ namespace Quarry
 
         public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
         {
-            if (!DebugSettings.godMode)
+            if (!DebugSettings.godMode /*&& !QuarrySettings.placeAnywhere*/)
             {
                 // Draw the placement areas
                 Find.CurrentMap.GetComponent<QuarryGrid>().MarkForDraw();

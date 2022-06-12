@@ -17,6 +17,40 @@ namespace Quarry {
 		);
 
 
+		public static string RockType(string input)
+		{
+
+			string rockType = input;
+			if (rockType.EndsWith("_Rough"))
+			{
+				rockType = rockType.Replace("_Rough", "");
+			}
+			else
+			if (rockType.EndsWith("_RoughHewn"))
+			{
+				rockType = rockType.Replace("_RoughHewn", "");
+			}
+			else
+			if (rockType.EndsWith("_Smooth"))
+			{
+				rockType = rockType.Replace("_Smooth", "");
+			}
+			if (rockType.StartsWith("AB_"))
+			{
+				rockType = rockType.Replace("AB_", "");
+			}
+			else
+			if (rockType.StartsWith("GU_"))
+			{
+				rockType = rockType.Replace("GU_", "");
+			}
+			if (rockType.Contains(" "))
+			{
+				rockType = rockType.Replace(" ", "");
+			}
+			return rockType;
+		}
+
 		public static bool IsValidQuarryRock(string str) {
 			if (QuarrySettings.database.NullOrEmpty()) {
 				Log.Error("Quarry:: Trying to validate rock types before the database has been built.");
@@ -24,23 +58,12 @@ namespace Quarry {
 			}
 			string prefix = string.Empty;
 
-			// crappy handling of alpha biomes weird naming convention - figure a better way
-			/*
-			if (str.StartsWith("GU_"))
-			{
-				prefix = "GU_";
-				str = str.Replace(prefix, "");
-			}
-			if (str.StartsWith("AB_"))
-			{
-				prefix = "AB_";
-				str = str.Replace(prefix, "");
-			}
-            if (str.Contains(" "))
+            if (!QuarrySettings.quarryableStone.NullOrEmpty())
             {
-				str = str.Replace(" ", "");
+				Log.Message($"Checking {str}");
+				return QuarrySettings.quarryableStone.ContainsKey(str);
+
 			}
-			*/
 			// If there isn't a known chunk or blocks for this, it probably isn't a rock type and wouldn't work for spawning anyways
 			// This allows Cupro's Stones to work, and any other mod that uses standard naming conventions for stones
 			if (QuarrySettings.database.Find(t => t.defName.Contains("Chunk" + str)) != null &&
@@ -50,50 +73,22 @@ namespace Quarry {
 			return false;
 		}
 
-		public static bool IsValidQuarryRock(ThingDef str) {
+		public static bool IsValidQuarryRock(TerrainDef str) {
 			if (QuarrySettings.database.NullOrEmpty()) {
 				Log.Error("Quarry:: Trying to validate rock types before the database has been built.");
 				return false;
 			}
-            if (str.building.mineableThing != null && str.building.mineableThing.thingCategories.Contains(ThingCategoryDefOf.StoneChunks))
+			if (!QuarrySettings.quarryableStone.NullOrEmpty())
 			{
-                if (QuarrySettings.database.Find(t => t == str) != null)
-                {
-					return true;
-                }
-            }
+				Log.Message($"Checking {str}");
+				return QuarrySettings.quarryableStone.Values.Any(x => x.terrainDefs.Contains(str));
+
+			}
+
 			// If there isn't a known chunk or blocks for this, it probably isn't a rock type and wouldn't work for spawning anyways
 			// This allows Cupro's Stones to work, and any other mod that uses standard naming conventions for stones
 			if (QuarrySettings.database.Find(t => t.defName == "Chunk" + str) != null &&
 					QuarrySettings.database.Find(t => t.defName == "Blocks" + str) != null) {
-				return true;
-			}
-			return false;
-		}
-
-
-		public static bool IsValidQuarryChunk(string str, out ThingDef chunk) {
-			chunk = null;
-			if (QuarrySettings.database.NullOrEmpty()) {
-				Log.Error("Quarry:: Trying to validate chunks before the database has been built.");
-				return false;
-			}
-			chunk = QuarrySettings.database.Find(t => t.defName.Contains("Chunk" + str));
-			if (chunk != null) {
-				return true;
-			}
-			return false;
-		}
-
-
-		public static bool IsValidQuarryBlocks(string str, out ThingDef blocks) {
-			blocks = null;
-			if (QuarrySettings.database.NullOrEmpty()) {
-				Log.Error("Quarry:: Trying to validate blocks before the database has been built.");
-				return false;
-			}
-			blocks = QuarrySettings.database.Find(t => t.defName.Contains("Blocks" + str));
-			if (blocks != null) {
 				return true;
 			}
 			return false;

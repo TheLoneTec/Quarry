@@ -14,6 +14,7 @@ namespace Quarry
         public static WorkTypeDef QuarryMining;
         public static TerrainDef QRY_QuarriedGround;
         public static TerrainDef QRY_QuarriedGroundWall;
+        public static TerrainDef QRY_ReclaimedSoil;
 
         public static JobDef QRY_MineQuarry;
 

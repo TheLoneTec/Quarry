@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Buildings\Building_Platform.cs" />
     <Compile Include="Buildings\Building_MiniQuarry.cs" />
+    <Compile Include="Utils\ModdedStoneDef.cs" />
     <Compile Include="Utils\QuarryDebugToolsSpawning.cs" />
     <Compile Include="MultiplayerCompatibility.cs" />
     <Compile Include="Static\Extensions.cs" />
