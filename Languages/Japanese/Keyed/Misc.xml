@@ -51,6 +51,12 @@
   <QRY_AllowRottable>回転アイテムを許可</QRY_AllowRottable>
   <QRY_TooltipAllowRottable>回転可能なアイテムを採石場のリストに追加できるようにします</QRY_TooltipAllowRottable>
 
+  <QRY_SettingsReclaimedSoilFertility>埋め戻した土壌の肥沃度</QRY_SettingsReclaimedSoilFertility>
+  <QRY_TooltipReclaimedSoilFertility>埋め戻して再び利用できるようになった土壌の肥沃度を設定します。</QRY_TooltipReclaimedSoilFertility>
+
+  <QRY_PlaceAnywhere>どこでも配置可能</QRY_PlaceAnywhere>
+  <QRY_TooltipPlaceAnywhere>採石場を採石可能な資源のある場所に限定せずに、自由に配置できるようにします。</QRY_TooltipPlaceAnywhere>
+
   <QRY_LabelAddThing>リストに追加</QRY_LabelAddThing>
   <QRY_LabelRemoveThing>リストから削除</QRY_LabelRemoveThing>
   <QRY_LabelResetList>リストを初期化</QRY_LabelResetList>
