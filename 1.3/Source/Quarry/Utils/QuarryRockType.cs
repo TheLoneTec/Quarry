@@ -12,18 +12,22 @@ namespace Quarry
 			this.blockDef = blockDef;
             if (rockDef != null)
 			{
-				if (chunkDef == null) this.chunkDef = rockDef.building.mineableThing;
-                if (rockDef.building?.naturalTerrain != null)
-				{
-					terrainDefs.Add(rockDef.building.naturalTerrain);
+				if (this.chunkDef == null) this.chunkDef = this.rockDef.building.mineableThing;
+                if (this.blockDef == null && this.chunkDef != null && !this.chunkDef.butcherProducts.NullOrEmpty() && this.chunkDef.butcherProducts.Any(x=> x.thingDef != null && x.thingDef.defName.ToLower().Contains("block")))
+                {
+					this.blockDef = this.chunkDef.butcherProducts.Find(x => x.thingDef != null && x.thingDef.defName.ToLower().Contains("block")).thingDef;
 				}
-                if (rockDef.building?.leaveTerrain != null)
+                if (this.rockDef.building?.naturalTerrain != null)
 				{
-					terrainDefs.Add(rockDef.building.leaveTerrain);
+					terrainDefs.Add(this.rockDef.building.naturalTerrain);
 				}
-                if (rockDef.building?.naturalTerrain?.smoothedTerrain != null)
+                if (this.rockDef.building?.leaveTerrain != null)
 				{
-					terrainDefs.Add(rockDef.building.naturalTerrain.smoothedTerrain);
+					terrainDefs.Add(this.rockDef.building.leaveTerrain);
+				}
+                if (this.rockDef.building?.naturalTerrain?.smoothedTerrain != null)
+				{
+					terrainDefs.Add(this.rockDef.building.naturalTerrain.smoothedTerrain);
 				}
 			}
 		}
