@@ -180,7 +180,7 @@ namespace Quarry
 					Rect viewRect = new Rect(0f, 0f, position.width - 16f, scrollViewHeight);
 
 					float num = 0f;
-					List<ThingCountExposable> dict = new List<ThingCountExposable>(QuarrySettings.oreDictionary);
+					List<ThingCountExposable> dict = new List<ThingCountExposable>(QuarrySettings.oreDictionary.Where(x=> x.Loaded));
 
 					GUI.BeginGroup(position);
 					Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect, true);

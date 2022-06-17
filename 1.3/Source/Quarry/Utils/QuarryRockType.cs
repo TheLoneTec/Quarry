@@ -3,7 +3,7 @@ using Verse;
 
 namespace Quarry
 {
-    public class QuarryRockType
+    public class QuarryRockType : IExposable
 	{
 		public QuarryRockType(ThingDef rockDef, ThingDef chunkDef = null, ThingDef blockDef = null)
 		{
@@ -36,5 +36,9 @@ namespace Quarry
 		public ThingDef blockDef;
 		public List<TerrainDef> terrainDefs = new List<TerrainDef>();
 
-	}
+        public void ExposeData()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

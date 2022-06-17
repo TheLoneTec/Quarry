@@ -5,16 +5,18 @@ namespace Quarry {
 
   public sealed class ThingCountExposable : IExposable {
 
-    public ThingDef thingDef;
+    public ThingDef _thingDef = null;
+    public string thingDefName;
     public int count;
-
+    public float weight;
 
     public ThingCountExposable() {
     }
 
 
     public ThingCountExposable(ThingDef thingDef, int count) {
-      this.thingDef = thingDef;
+      this._thingDef = thingDef;
+      this.thingDefName = thingDef.defName;
       this.count = count;
     }
 
@@ -30,20 +32,33 @@ namespace Quarry {
       });
     }
 
-
-    public override int GetHashCode() {
-      return (int)thingDef.shortHash + count << 16;
-    }
-
-
-    public void ExposeData() {
-      Scribe_Defs.Look(ref thingDef, "thingDef");
-      Scribe_Values.Look(ref count, "count", 0, false);
-      if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs && thingDef == null) {
-        Log.Warning($"{Static.Quarry}:: Failed to load ThingCount. Setting default.");
-        thingDef = ThingDefOf.Steel;
-        count = (count <= 0) ? 10 : count;
-      }
+        /*
+    public override int GetHashCode() 
+        {
+            return (int)thingDef.shortHash + count << 16;
+        }
+        */
+        private bool loaded;
+        public bool Loaded => loaded;
+        public ThingDef thingDef => _thingDef != null ? _thingDef : (thingDefName.NullOrEmpty() ? ThingDefOf.Steel : _thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thingDefName));
+    public void ExposeData()
+        {
+    //        Log.Message($"Quarry:: ThingCountExposable ExposeData({Scribe.mode})");
+            /*
+            if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs && thingDef == null)
+            {
+                Log.Warning($"{Static.Quarry}:: Failed to load ThingCount. Setting default.");
+                count = (count <= 0) ? 10 : count;
+            }
+            */
+            if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs)
+            {
+                _thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thingDefName);
+                loaded = _thingDef != null;
+            }
+            Scribe_Values.Look(ref thingDefName, "thingDef");
+             Scribe_Values.Look(ref weight, "weight", 0f);
+             Scribe_Values.Look(ref count, "count", 0);
     }
   }
 }

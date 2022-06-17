@@ -40,11 +40,13 @@ namespace Quarry
         
         private float quarryPercent = 1f;
         private int jobsCompleted = 0;
-        private bool firstSpawn = false;
         private CompAffectedByFacilities facilityComp;
+        private List<QuarryRockType> rocksUnder = new List<QuarryRockType>();
         private List<string> rockTypesUnder = new List<string>();
+
         private List<ThingDef> blocksUnder = new List<ThingDef>();
         private List<ThingDef> chunksUnder = new List<ThingDef>();
+
         private List<Pawn> owners => compAssignable.AssignedPawnsForReading;
         #endregion Fields
 
@@ -127,7 +129,13 @@ namespace Quarry
             {
                 if (chunksUnder.Count <= 0)
                 {
-                    MakeThingDefListsFrom(RockTypesUnder);
+                    foreach (var item in RockTypesUnder)
+                    {
+                        if (item.chunkDef != null && !chunksUnder.Contains(item.chunkDef))
+                        {
+                            chunksUnder.Add(item.chunkDef);
+                        }
+                    }
                 }
                 return chunksUnder;
             }
@@ -139,7 +147,13 @@ namespace Quarry
             {
                 if (blocksUnder.Count <= 0)
                 {
-                    MakeThingDefListsFrom(RockTypesUnder);
+                    foreach (var item in RockTypesUnder)
+                    {
+                        if (item.blockDef != null && !blocksUnder.Contains(item.blockDef))
+                        {
+                            blocksUnder.Add(item.blockDef);
+                        }
+                    }
                 }
                 return blocksUnder;
             }
@@ -186,15 +200,17 @@ namespace Quarry
             }
         }
 
-        private List<string> RockTypesUnder
+        bool checkedRocksUnder = false;
+        private List<QuarryRockType> RockTypesUnder
         {
             get
             {
-                if (rockTypesUnder.Count <= 0)
+                if (rocksUnder.Count <= 0)
                 {
-                    rockTypesUnder = RockTypesFromMap();
+                    if (!checkedRocksUnder) RockTypesFromUnder();
+                    if (rocksUnder.Count <= 0) rocksUnder = RockTypesFromMap();
                 }
-                return rockTypesUnder;
+                return rocksUnder;
             }
         }
 
@@ -224,14 +240,14 @@ namespace Quarry
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 SortOwners();
+                for (int i = 0; i < rockTypesUnder.Count; i++)
+                {
+                    if (QuarrySettings.quarryableStone.TryGetValue(rockTypesUnder[i], out QuarryRockType rockType))
+                    {
+                        rocksUnder.Add(rockType);
+                    }
+                }
             }
-        }
-
-
-        public override void PostMake()
-        {
-            base.PostMake();
-            firstSpawn = true;
         }
 
 
@@ -241,29 +257,22 @@ namespace Quarry
 
             facilityComp = GetComp<CompAffectedByFacilities>();
 
-            if (firstSpawn)
+            if (!respawningAfterLoad)
             {
                 // Set the initial quarry health
                 quarryPercent = 1f;
 
                 CellRect rect = this.OccupiedRect();
                 // Remove this area from the quarry grid. Quarries can never be built here again
-            //    map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
-
+                //    map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
+                RockTypesFromUnder();
+                // Now that all the cells have been processed, create ThingDef lists
+                MakeThingDefListsFrom(RockTypesUnder);
+                // Change the terrain here to be quarried stone				
+                // Spawn filth for the quarry
                 foreach (IntVec3 c in rect)
                 {
-                    // What type of terrain are we over?
-                    TerrainDef td = c.GetTerrain(Map);
-                    // Original method, problem here is that mods that use prefixes like Alpha Biomes "AB_" trigger the split and only pass the prefix, not the defname
-                    //    string rockType = td.defName.Split('_').First();
-                    // this seems like a better method, mods with prfixes are a little easier to handle stone from
-                    string rockType = QuarryUtility.RockType(td.defName);
-                    // If this is a valid rock type, add it to the list
-                    if (QuarryUtility.IsValidQuarryRock(td))
-                    {
-                        rockTypesUnder.Add(rockType);
-                    }
-                    // Change the terrain here to be quarried stone					
+                    SpawnFilth(c);
                     if (rect.ContractedBy(WallThickness).Contains(c))
                     {
                         Map.terrainGrid.SetTerrain(c, QuarryDefOf.QRY_QuarriedGround);
@@ -272,13 +281,6 @@ namespace Quarry
                     {
                         Map.terrainGrid.SetTerrain(c, QuarryDefOf.QRY_QuarriedGroundWall);
                     }
-                }
-                // Now that all the cells have been processed, create ThingDef lists
-                MakeThingDefListsFrom(RockTypesUnder);
-                // Spawn filth for the quarry
-                foreach (IntVec3 c in rect)
-                {
-                    SpawnFilth(c);
                 }
                 // Change the ground back to normal quarried stone where the ladders are
                 // This is to negate the speed decrease and encourages pawns to use the ladders
@@ -355,47 +357,66 @@ namespace Quarry
 
 
         #region MethodGroup_Quarry
-        private List<string> RockTypesFromMap()
+
+
+        private void RockTypesFromUnder()
         {
             // Try to add all the rock types found in the map
-            List<string> list = new List<string>();
-            List<TaggedString> tempRockTypesUnder = Find.World.NaturalRockTypesIn(Map.Tile).Select(r => r.LabelCap).ToList();
-            foreach (string str in tempRockTypesUnder)
-            {
-                if (QuarryUtility.IsValidQuarryRock(str))
+            if (!checkedRocksUnder && rockTypesUnder.NullOrEmpty())
+                foreach (IntVec3 c in this.OccupiedRect())
                 {
-                    list.Add(str);
+                    // What type of terrain are we over?
+                    TerrainDef td = c.GetTerrain(Map);
+                    // If this is a valid rock type, add it to the list
+                    if (QuarryUtility.IsValidQuarryRock(td, out QuarryRockType rockType, out string key) && !rocksUnder.Contains(rockType))
+                    {
+                    //    Log.Message($"{td} rock type {rockType.rockDef} blocks: {rockType.blockDef} with key {key}");
+                        rocksUnder.Add(rockType);
+                        rockTypesUnder.Add(key);
+                    }
                 }
-            }
+            else
+                for (int i = 0; i < rockTypesUnder.Count; i++)
+                {
+                    if (QuarrySettings.quarryableStone.TryGetValue(rockTypesUnder[i], out QuarryRockType rockType))
+                    {
+                        rocksUnder.Add(rockType);
+                    }
+                }
+            checkedRocksUnder = true;
+        }
+
+        private List<QuarryRockType> RockTypesFromMap()
+        {
+            // Try to add all the rock types found in the map
+            List<QuarryRockType> list = new List<QuarryRockType>();
+            list = QuarrySettings.quarryableStone.Values.Where(x => Find.World.NaturalRockTypesIn(Map.Tile).Contains(x.rockDef)).ToList();
             // This will cause an error if there still isn't a list, so make a new one using known rocks
             if (list.Count <= 0)
             {
-                Log.Warning($"Quarry:: No valid rock types were found in the map. Building list using {tempRockTypesUnder.Count} known rocks.");
+                Log.Warning($"Quarry:: No valid rock types were found in the map. Building list using {Find.World.NaturalRockTypesIn(Map.Tile).Count()} known rocks.");
                 Rand.PushState();
-                list = !QuarrySettings.quarryableStone.NullOrEmpty() ? QuarrySettings.quarryableStone.Keys.Take(tempRockTypesUnder.Count).ToList() : new List<string>() { "Sandstone", "Limestone", "Granite", "Marble", "Slate" };
+                list = QuarrySettings.quarryableStone.Values.Take(Find.World.NaturalRockTypesIn(Map.Tile).Count()).ToList();
+                rockTypesUnder.AddRange((List<string>)QuarrySettings.quarryableStone.Where(x => list.Contains(x.Value)).Select(x =>x.Key));
                 Rand.PopState();
             }
             return list;
         }
 
 
-        private void MakeThingDefListsFrom(List<string> stringList)
+        private void MakeThingDefListsFrom(List<QuarryRockType> rockTypes)
         {
             chunksUnder = new List<ThingDef>();
             blocksUnder = new List<ThingDef>();
-            foreach (string str in stringList)
+            foreach (QuarryRockType rockType in rockTypes)
             {
-                if (!QuarrySettings.quarryableStone.NullOrEmpty() && QuarrySettings.quarryableStone.TryGetValue(str, out QuarryRockType rockType))
+                if (rockType.chunkDef != null && !chunksUnder.Contains(rockType.chunkDef))
                 {
-                //    Log.Message($"using new database with {QuarrySettings.quarryableStone.Count} entries, searing for {str}");
-                    if (rockType.chunkDef != null && !chunksUnder.Contains(rockType.chunkDef))
-                    {
-                        chunksUnder.Add(rockType.chunkDef);
-                    }
-                    if (rockType.blockDef != null && !blocksUnder.Contains(rockType.blockDef))
-                    {
-                        blocksUnder.Add(rockType.blockDef);
-                    }
+                    chunksUnder.Add(rockType.chunkDef);
+                }
+                if (rockType.blockDef != null && !blocksUnder.Contains(rockType.blockDef))
+                {
+                    blocksUnder.Add(rockType.blockDef);
                 }
             }
         }
@@ -566,14 +587,14 @@ namespace Quarry
                     MineModeResources(__instance);
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
             }
-            if (__instance.mineModeToggle != MiningMode.Blocks && QuarryDefOf.Stonecutting.IsFinished)
+            if (__instance.mineModeToggle != MiningMode.Blocks && QuarryDefOf.Stonecutting.IsFinished && !__instance.BlocksUnder.NullOrEmpty())
             {
                 floatMenu.Add(new FloatMenuOption(Static.LabelMineBlocks, delegate ()
                 {
                     MineModeBlocks(__instance);
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
             }
-            if (__instance.mineModeToggle != MiningMode.Chunks)
+            if (__instance.mineModeToggle != MiningMode.Chunks && !__instance.RockTypesUnder.NullOrEmpty())
             {
                 floatMenu.Add(new FloatMenuOption(Static.LabelMineChunks, delegate ()
                 {
@@ -777,17 +798,27 @@ namespace Quarry
             if (Prefs.DevMode)
             {
                 List<string> report = new List<string>();
-                for (int i = 0; i < rockTypesUnder.Count; i++)
+                for (int i = 0; i < rocksUnder.Count; i++)
                 {
-                    if (!report.Contains(rockTypesUnder[i]))
+                    if (!report.Contains(rocksUnder[i].rockDef.LabelCap))
                     {
-                        report.Add(rockTypesUnder[i]);
+                        report.Add(rocksUnder[i].rockDef.LabelCap);
                     }
                 }
                 stringBuilder.AppendLine("Rock Types available: " + report.Count);
                 foreach (string item in report)
                 {
                     stringBuilder.AppendLine("     " + item.CapitalizeFirst());
+                }
+                stringBuilder.AppendLine("Chunks: " + report.Count);
+                foreach (var item in chunksUnder)
+                {
+                    stringBuilder.AppendLine("     " + item.LabelCap);
+                }
+                stringBuilder.AppendLine("Blocks: " + report.Count);
+                foreach (var item in blocksUnder)
+                {
+                    stringBuilder.AppendLine("     " + item.LabelCap);
                 }
                 stringBuilder.AppendLine();
             }

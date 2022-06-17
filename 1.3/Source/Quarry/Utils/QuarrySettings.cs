@@ -20,7 +20,6 @@ namespace Quarry
         internal static float reclaimedSoilFertility = 0.25f;
         internal static List<ThingCountExposable> oreDictionary = null;
         internal static List<ThingDef> database;
-        internal static List<QuarryableStoneDef> moddatabase;
         internal static Dictionary<string, QuarryRockType> quarryableStone;
 
         internal static int QuarryMaxHealth
@@ -38,6 +37,7 @@ namespace Quarry
 
         public override void ExposeData()
         {
+        //    Log.Message($"Quarry:: QuarrySettings ExposeData({Scribe.mode})");
             base.ExposeData();
 
             Scribe_Values.Look(ref letterSent, "QRY_letterSent", false);
@@ -56,21 +56,23 @@ namespace Quarry
             // This is most likely due to removing a mod, which will trigger a game reset
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
+                /*
                 List<ThingCountExposable> dict = new List<ThingCountExposable>();
                 bool warning = false;
-                for (int i = 0; i < oreDictionary.Count; i++)
+                for (int i = 0; i < oreDictionarySaved.Count; i++)
                 {
-                    if (oreDictionary[i] != null)
+                    if (oreDictionarySaved[i].Loaded)
                     {
-                        dict.Add(new ThingCountExposable(oreDictionary[i].thingDef, oreDictionary[i].count));
+                        dict.Add(oreDictionarySaved[i]);
                     }
+
                     else if (!warning)
                     {
-                        warning = true;
-                        Log.Warning("Quarry:: Found 1 or more null entries in ore dictionary. This is most likely due to an uninstalled mod. Removing entries from list.");
+                    //    warning = true;
+                        Log.Warning($"Quarry:: Found 1({oreDictionarySaved[i].thingDefName}, {oreDictionarySaved[i].thingDefName}) or more null entries in ore dictionary. This is most likely due to an uninstalled mod. Removing entries from list.");
                     }
                 }
-                oreDictionary = dict;
+                */
             }
         }
     }

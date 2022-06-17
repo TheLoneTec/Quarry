@@ -34,6 +34,7 @@ namespace Quarry {
 
 		public static void Build()
         {
+		//	Log.Message("Quarry:: OreDictionary Buld()");
 			List<ThingCountExposable> oreDictionary = new List<ThingCountExposable>();
 
 			// Get all ThingDefs that have mineable resources
