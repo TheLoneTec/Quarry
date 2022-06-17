@@ -9,7 +9,7 @@ namespace Quarry {
 		private CellBoolDrawer drawer;
 
 		public Color Color => Color.green; 
-		public bool GetCellBool(int index) => !map.fogGrid.IsFogged(index) && boolGrid[index];
+		public bool GetCellBool(int index) => !map.fogGrid.IsFogged(index) && boolGrid[index] && !(map.edificeGrid[index] is Building_Quarry);
 		public bool GetCellBool(IntVec3 c) => boolGrid[c];
 		public Color GetCellExtraColor(int index) => Color.white;
 
