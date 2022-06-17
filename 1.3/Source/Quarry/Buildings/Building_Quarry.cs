@@ -44,8 +44,8 @@ namespace Quarry
         private List<QuarryRockType> rocksUnder = new List<QuarryRockType>();
         private List<string> rockTypesUnder = new List<string>();
 
-        private List<ThingDef> blocksUnder = new List<ThingDef>();
-        private List<ThingDef> chunksUnder = new List<ThingDef>();
+        private List<ThingDef> blocksUnder;
+        private List<ThingDef> chunksUnder;
 
         private List<Pawn> owners => compAssignable.AssignedPawnsForReading;
         #endregion Fields
@@ -127,8 +127,9 @@ namespace Quarry
         {
             get
             {
-                if (chunksUnder.Count <= 0)
+                if (chunksUnder == null)
                 {
+                    chunksUnder = new List<ThingDef>();
                     foreach (var item in RockTypesUnder)
                     {
                         if (item.chunkDef != null && !chunksUnder.Contains(item.chunkDef))
@@ -145,8 +146,9 @@ namespace Quarry
         {
             get
             {
-                if (blocksUnder.Count <= 0)
+                if (blocksUnder == null)
                 {
+                    blocksUnder = new List<ThingDef>();
                     foreach (var item in RockTypesUnder)
                     {
                         if (item.blockDef != null && !blocksUnder.Contains(item.blockDef))
@@ -267,7 +269,6 @@ namespace Quarry
                 //    map.GetComponent<QuarryGrid>().RemoveFromGrid(rect);
                 RockTypesFromUnder();
                 // Now that all the cells have been processed, create ThingDef lists
-                MakeThingDefListsFrom(RockTypesUnder);
                 // Change the terrain here to be quarried stone				
                 // Spawn filth for the quarry
                 foreach (IntVec3 c in rect)
@@ -363,18 +364,22 @@ namespace Quarry
         {
             // Try to add all the rock types found in the map
             if (!checkedRocksUnder && rockTypesUnder.NullOrEmpty())
+            {
                 foreach (IntVec3 c in this.OccupiedRect())
                 {
                     // What type of terrain are we over?
                     TerrainDef td = c.GetTerrain(Map);
                     // If this is a valid rock type, add it to the list
-                    if (QuarryUtility.IsValidQuarryRock(td, out QuarryRockType rockType, out string key) && !rocksUnder.Contains(rockType))
+                    if (QuarryUtility.IsValidQuarryRock(td, out QuarryRockType rockType, out string key) && !rocksUnder.Contains(rockType) && !rockTypesUnder.Contains(key))
                     {
-                    //    Log.Message($"{td} rock type {rockType.rockDef} blocks: {rockType.blockDef} with key {key}");
+                        //    Log.Message($"{td} rock type {rockType.rockDef} blocks: {rockType.blockDef} with key {key}");
                         rocksUnder.Add(rockType);
                         rockTypesUnder.Add(key);
                     }
                 }
+                checkedRocksUnder = true;
+
+            }
             else
                 for (int i = 0; i < rockTypesUnder.Count; i++)
                 {
@@ -383,7 +388,6 @@ namespace Quarry
                         rocksUnder.Add(rockType);
                     }
                 }
-            checkedRocksUnder = true;
         }
 
         private List<QuarryRockType> RockTypesFromMap()
@@ -403,23 +407,6 @@ namespace Quarry
             return list;
         }
 
-
-        private void MakeThingDefListsFrom(List<QuarryRockType> rockTypes)
-        {
-            chunksUnder = new List<ThingDef>();
-            blocksUnder = new List<ThingDef>();
-            foreach (QuarryRockType rockType in rockTypes)
-            {
-                if (rockType.chunkDef != null && !chunksUnder.Contains(rockType.chunkDef))
-                {
-                    chunksUnder.Add(rockType.chunkDef);
-                }
-                if (rockType.blockDef != null && !blocksUnder.Contains(rockType.blockDef))
-                {
-                    blocksUnder.Add(rockType.blockDef);
-                }
-            }
-        }
 
 
         private void SpawnFilth(IntVec3 c)
@@ -795,30 +782,18 @@ namespace Quarry
                     stringBuilder.AppendLine();
                 }
             }
-            if (Prefs.DevMode)
+            if (Prefs.DevMode || PlayerCanSeeOwners)
             {
+                stringBuilder.AppendLine("Rock Types available: ");
                 List<string> report = new List<string>();
                 for (int i = 0; i < rocksUnder.Count; i++)
                 {
-                    if (!report.Contains(rocksUnder[i].rockDef.LabelCap))
+                    QuarryRockType rockType = rocksUnder[i];
+                    if (!report.Contains(rockType.rockDef.LabelCap))
                     {
-                        report.Add(rocksUnder[i].rockDef.LabelCap);
+                        report.Add(rockType.rockDef.LabelCap);
+                        stringBuilder.AppendLine("     " + rockType.rockDef.LabelCap + (rockType.chunkDef != null ? ": chunks" : "") + (rockType.blockDef != null ? ((rockType.chunkDef != null ? ", " : ": ") + "blocks") : ""));
                     }
-                }
-                stringBuilder.AppendLine("Rock Types available: " + report.Count);
-                foreach (string item in report)
-                {
-                    stringBuilder.AppendLine("     " + item.CapitalizeFirst());
-                }
-                stringBuilder.AppendLine("Chunks: " + report.Count);
-                foreach (var item in chunksUnder)
-                {
-                    stringBuilder.AppendLine("     " + item.LabelCap);
-                }
-                stringBuilder.AppendLine("Blocks: " + report.Count);
-                foreach (var item in blocksUnder)
-                {
-                    stringBuilder.AppendLine("     " + item.LabelCap);
                 }
                 stringBuilder.AppendLine();
             }
