@@ -40,6 +40,9 @@
   <ItemGroup>
     <Compile Include="Buildings\Building_Platform.cs" />
     <Compile Include="Buildings\Building_MiniQuarry.cs" />
+    <Compile Include="Harmony\Patches\FogGrid_Notify_FogBlockerRemoved_Patch.cs" />
+    <Compile Include="Harmony\Patches\FogGrid_Notify_PawnEnteringDoor_Patch.cs" />
+    <Compile Include="Harmony\HarmonyInstance.cs" />
     <Compile Include="Utils\QuarryableStoneDef.cs" />
     <Compile Include="Utils\QuarryDebugToolsSpawning.cs" />
     <Compile Include="MultiplayerCompatibility.cs" />
