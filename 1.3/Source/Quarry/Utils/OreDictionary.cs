@@ -43,7 +43,7 @@ namespace Quarry {
 			// Assign commonality values for ores
 			foreach (ThingDef ore in ores) 
 			{
-				if (rebuild || !newDict.Any(x => ore == x.thingDef)) newDict.Add(new ThingCountExposable(ore.building.mineableThing, ValueForMineableOre(ore)));
+				if (rebuild || newDict.NullOrEmpty () || !newDict.Any(x => ore == x.thingDef)) newDict.Add(new ThingCountExposable(ore.building.mineableThing, ValueForMineableOre(ore)));
 				else newDict.Find(x => ore == x.thingDef).weight = ValueForMineableOre(ore);
 			}
 
@@ -90,7 +90,7 @@ namespace Quarry {
         public static ThingDef TakeOne() {
         // Make sure there is a dictionary to work from
             if (QuarrySettings.oreDictionary == null) {
-				    Build();
+				    Build(true);
 			    }
 
 			    // Sorts the weight list

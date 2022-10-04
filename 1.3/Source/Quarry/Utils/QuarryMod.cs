@@ -168,7 +168,7 @@ namespace Quarry
 
 					// Reset the dictionary
 					if (Widgets.ButtonText(resRect, Static.LabelResetList)) {
-						OreDictionary.Build();
+						OreDictionary.Build(true);
 					}
 				}
 
