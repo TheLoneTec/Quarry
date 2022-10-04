@@ -28,8 +28,8 @@ namespace Quarry {
 			else if (c.Fogged(Map)) {
 				result = false;
 			}
-			else if (Map.designationManager.DesignationAt(c, QuarryDefOf.QRY_Designator_ReclaimSoil) != null || 
-			         Map.designationManager.DesignationAt(c, DesignationDefOf.SmoothFloor) != null) {
+			else if (Map.designationManager.DesignationAt(c, QuarryDefOf.QRY_Designator_ReclaimSoil) != null ||
+                     Map.designationManager.DesignationAt(c, DesignationDefOf.SmoothFloor) != null) {
 				result = false;
 			}
 			else if (c.InNoBuildEdgeArea(Map)) {
@@ -42,7 +42,7 @@ namespace Quarry {
 				}
 				else {
 					TerrainDef terrain = c.GetTerrain(Map);
-					if (terrain != QuarryDefOf.QRY_QuarriedGround) {
+					if (terrain != QuarryDefOf.QRY_QuarriedGround && terrain != QuarryDefOf.QRY_QuarriedGroundWall) {
 						result = Static.MessageMustDesignateQuarriedGround;
 					}
 					else {
