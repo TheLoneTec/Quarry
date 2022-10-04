@@ -38,9 +38,9 @@ namespace Quarry {
             return (int)thingDef.shortHash + count << 16;
         }
         */
-        private bool loaded;
-        public bool Loaded => loaded;
-        public ThingDef thingDef => _thingDef != null ? _thingDef : (thingDefName.NullOrEmpty() ? ThingDefOf.Steel : _thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thingDefName));
+        private bool? loaded;
+        public bool Loaded => loaded != null ? loaded.Value : (loaded = thingDef != null).Value;
+        public ThingDef thingDef => _thingDef != null ? _thingDef : (thingDefName.NullOrEmpty() ? null : _thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thingDefName));
     public void ExposeData()
         {
     //        Log.Message($"Quarry:: ThingCountExposable ExposeData({Scribe.mode})");

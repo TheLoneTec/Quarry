@@ -32,33 +32,35 @@ namespace Quarry {
 		);
 
 
-		public static void Build()
+		public static void Build(bool rebuild = false)
         {
 		//	Log.Message("Quarry:: OreDictionary Buld()");
-			List<ThingCountExposable> oreDictionary = new List<ThingCountExposable>();
+			List<ThingCountExposable> newDict = rebuild ? new List<ThingCountExposable>() : QuarrySettings.oreDictionary;
 
 			// Get all ThingDefs that have mineable resources
 			IEnumerable<ThingDef> ores = DefDatabase<ThingDef>.AllDefs.Where((ThingDef def) => validOre(def));
 
 			// Assign commonality values for ores
-			foreach (ThingDef ore in ores) {
-				oreDictionary.Add(new ThingCountExposable(ore.building.mineableThing, ValueForMineableOre(ore)));
+			foreach (ThingDef ore in ores) 
+			{
+				if (rebuild || !newDict.Any(x => ore == x.thingDef)) newDict.Add(new ThingCountExposable(ore.building.mineableThing, ValueForMineableOre(ore)));
+				else newDict.Find(x => ore == x.thingDef).weight = ValueForMineableOre(ore);
 			}
 
 			// Get the rarest ore in the list
 			int num = MaxWeight;
-			for (int i = 0; i < oreDictionary.Count; i++) {
-				if (oreDictionary[i].count < num) {
-					num = oreDictionary[i].count;
+			for (int i = 0; i < newDict.Count; i++) {
+				if (newDict[i].count < num) {
+					num = newDict[i].count;
 				}
 			}
 			num += num / 2;
 
 			// Manually add components
-			oreDictionary.Add(new ThingCountExposable(ThingDefOf.ComponentIndustrial, num));
-
+			if (rebuild || !newDict.Any(x => ThingDefOf.ComponentIndustrial == x.thingDef)) newDict.Add(new ThingCountExposable(ThingDefOf.ComponentIndustrial, num));
+			else newDict.Find(x => ThingDefOf.ComponentIndustrial == x.thingDef).weight = num;
 			// Assign this dictionary for the mod to use
-			QuarrySettings.oreDictionary = oreDictionary;
+			QuarrySettings.oreDictionary = newDict;
 		}
 
 
