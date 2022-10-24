@@ -155,7 +155,7 @@
 					<li>ComponentIndustrial</li>
 				</thingDefs>
 				<disallowedThingDefs>
-					<li MayRequire="Biotech">ToxicWaste</li>
+					<li MayRequire="Biotech">Wastepack</li>
 				</disallowedThingDefs>
 			</filter>
 		</defaultStorageSettings>
