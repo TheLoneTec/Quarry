@@ -35,7 +35,7 @@ namespace Quarry {
 		public static void Build(bool rebuild = false)
         {
 		//	Log.Message("Quarry:: OreDictionary Buld()");
-			List<ThingCountExposable> newDict = rebuild ? new List<ThingCountExposable>() : QuarrySettings.oreDictionary;
+			List<ThingCountExposable> newDict = rebuild || QuarrySettings.oreDictionary.NullOrEmpty() ? new List<ThingCountExposable>() : QuarrySettings.oreDictionary;
 
 			// Get all ThingDefs that have mineable resources
 			IEnumerable<ThingDef> ores = DefDatabase<ThingDef>.AllDefs.Where((ThingDef def) => validOre(def));
