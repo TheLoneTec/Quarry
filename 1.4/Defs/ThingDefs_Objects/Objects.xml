@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-<DesignatorDropdownGroupDef>
-<defName>Dropdown_Cupro_Quarry</defName>
-</DesignatorDropdownGroupDef>
+	<DesignatorDropdownGroupDef>
+		<defName>Dropdown_Cupro_Quarry</defName>
+	</DesignatorDropdownGroupDef>
 
 	<ThingDef Name="QRY_QuarryBase" ParentName="BuildingBase" Abstract="True">
 		<graphicData>
@@ -62,12 +62,12 @@
 		<costList>
 			<Steel>100</Steel>
 		</costList>
-    <comps>
-      <li Class="CompProperties_AssignableToPawn">
-        <drawAssignmentOverlay>true</drawAssignmentOverlay>
-        <!-- <compClass>CompAssignableToPawn_Bed</compClass> -->
-      </li>
-    </comps>
+		<comps>
+			<li Class="CompProperties_AssignableToPawn">
+				<drawAssignmentOverlay>true</drawAssignmentOverlay>
+				<!-- <compClass>CompAssignableToPawn_Bed</compClass> -->
+			</li>
+		</comps>
 	</ThingDef>
 
 	<ThingDef ParentName="QRY_QuarryBase">
@@ -87,12 +87,12 @@
 		<costList>
 			<Steel>50</Steel>
 		</costList>
-    <comps>
-      <li Class="CompProperties_AssignableToPawn">
-        <drawAssignmentOverlay>true</drawAssignmentOverlay>
-        <!-- <compClass>CompAssignableToPawn_Bed</compClass> -->
-      </li>
-    </comps>
+		<comps>
+			<li Class="CompProperties_AssignableToPawn">
+				<drawAssignmentOverlay>true</drawAssignmentOverlay>
+				<!-- <compClass>CompAssignableToPawn_Bed</compClass> -->
+			</li>
+		</comps>
 	</ThingDef>
 
 	<ThingDef ParentName="BuildingBase">
@@ -106,13 +106,13 @@
 			<drawSize>(3,3)</drawSize>
 			<damageData>
 				<cornerTL>Damage/Corner</cornerTL>
-        <cornerTR>Damage/Corner</cornerTR>
-        <cornerBL>Damage/Corner</cornerBL>
-        <cornerBR>Damage/Corner</cornerBR>
-        <edgeTop>Damage/Edge</edgeTop>
-        <edgeBot>Damage/Edge</edgeBot>
-        <edgeLeft>Damage/Edge</edgeLeft>
-        <edgeRight>Damage/Edge</edgeRight>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+				<edgeTop>Damage/Edge</edgeTop>
+				<edgeBot>Damage/Edge</edgeBot>
+				<edgeLeft>Damage/Edge</edgeLeft>
+				<edgeRight>Damage/Edge</edgeRight>
 			</damageData>
 		</graphicData>
 		<altitudeLayer>LowPlant</altitudeLayer>
@@ -121,7 +121,7 @@
 		<designationCategory>Misc</designationCategory>
 		<pathCost>0</pathCost>
 		<fillPercent>0</fillPercent>
-    <coversFloor>true</coversFloor>
+		<coversFloor>true</coversFloor>
 		<canOverlapZones>false</canOverlapZones>
 		<stuffCategories>
 			<li>Woody</li>
@@ -142,30 +142,33 @@
 		<size>(3,3)</size>
 		<rotatable>false</rotatable>
 		<building>
-      <preventDeteriorationOnTop>false</preventDeteriorationOnTop>
-      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
-      <defaultStorageSettings>
-        <priority>Low</priority>
-        <filter>
-          <categories>
-            <li>ResourcesRaw</li>
-            <li>Items</li>
-          </categories>
-					<thingDefs>
-						<li>ComponentIndustrial</li>
-					</thingDefs>
-        </filter>
-      </defaultStorageSettings>
-    </building>
+		<preventDeteriorationOnTop>false</preventDeteriorationOnTop>
+		<ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+		<defaultStorageSettings>
+			<priority>Low</priority>
+			<filter>
+				<categories>
+					<li>ResourcesRaw</li>
+					<li>Items</li>
+				</categories>
+				<thingDefs>
+					<li>ComponentIndustrial</li>
+				</thingDefs>
+				<disallowedThingDefs>
+					<li MayRequire="Biotech">ToxicWaste</li>
+				</disallowedThingDefs>
+			</filter>
+		</defaultStorageSettings>
+		</building>
 		<comps>
 			<li Class="CompProperties_Facility">
 				<maxSimultaneous>2</maxSimultaneous>
 				<maxDistance>18</maxDistance>
 			</li>
 		</comps>
-    <inspectorTabs>
-      <li>ITab_Storage</li>
-    </inspectorTabs>
+		<inspectorTabs>
+			<li>ITab_Storage</li>
+		</inspectorTabs>
 		<placeWorkers>
 			<li>PlaceWorker_ShowFacilitiesConnections</li>
 		</placeWorkers>
