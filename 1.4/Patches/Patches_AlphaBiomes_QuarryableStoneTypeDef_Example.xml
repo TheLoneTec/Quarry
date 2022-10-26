@@ -14,7 +14,7 @@
 				<chunkDef>GU_ChunkRoseQuartz</chunkDef> <!-- will be worked out from the rockDef if left blank -->
 				<blockDef>GU_BlocksRoseQuartz</blockDef> <!-- will be worked out from the rockDef if left blank -->
 				<terrainDefs> <!-- any terrainDefs you want to yield the above when under a quarry -->
-					<li>GU_RedQuartzBase</li>
+					<!--li>GU_RedQuartzBase</li-->
 					<li>GU_MossyRed</li>
 				</terrainDefs>
 			</Quarry.QuarryableStoneDef>
