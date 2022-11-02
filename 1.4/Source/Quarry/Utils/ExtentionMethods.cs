@@ -36,7 +36,7 @@ namespace Quarry
 			Widgets.Label(rect, label);
 			setting = Widgets.HorizontalSlider(
 			SliderOffset,
-			setting, 0f, 100f, true).RoundToAsInt(5);
+			setting, 0f, 100f, true).RoundToAsInt(1);
 			if (!tooltip.NullOrEmpty())
 			{
 				if (Mouse.IsOver(rect))
