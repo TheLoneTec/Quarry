@@ -14,6 +14,8 @@
 	</v1.3>
 	<v1.4>
 		<li>1.4</li>
+		<li IfModActive="Slashandz.MiniMiner">1.4/MiniMechMiner</li>
+		<li IfModActive="Ludeon.RimWorld.Biotech">1.4/BioTech</li>
 		<li></li>
 	</v1.4>
 </loadFolders>
