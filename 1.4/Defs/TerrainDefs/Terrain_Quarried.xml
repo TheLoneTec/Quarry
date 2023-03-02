@@ -14,6 +14,7 @@
 		</statBases>
 		<affordances>
 			<li>Light</li>
+			<li>Medium</li>
 			<li>Heavy</li>
 			<li>SmoothableStone</li>
 		</affordances>

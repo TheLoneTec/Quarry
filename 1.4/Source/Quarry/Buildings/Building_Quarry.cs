@@ -782,7 +782,7 @@ namespace Quarry
             }
             if (Prefs.DevMode || PlayerCanSeeOwners)
             {
-                stringBuilder.AppendLine("Rock Types available: ");
+                stringBuilder.AppendLine("QRY_RockTypesAvailable".Translate() + ": ");
                 List<string> report = new List<string>();
                 for (int i = 0; i < rocksUnder.Count; i++)
                 {

@@ -22,6 +22,7 @@
 	<QRY_LabelHaulMode>Hauling mode</QRY_LabelHaulMode>
 	<QRY_Haul>Haul mined items.</QRY_Haul>
 	<QRY_NotHaul>Ignore mined items.</QRY_NotHaul>
+	<QRY_RockTypesAvailable>Quarryable stone</QRY_RockTypesAvailable>
 
 	<QRY_LabelMineResources>Quarry Resources</QRY_LabelMineResources>
 	<QRY_DescriptionMineResources>Designate the quarry to be mined for resources. Click to switch modes.</QRY_DescriptionMineResources>
