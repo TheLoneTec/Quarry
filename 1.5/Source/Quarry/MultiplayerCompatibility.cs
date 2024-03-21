@@ -1,7 +1,8 @@
 ﻿using Verse;
-using Multiplayer.API;
+//using Multiplayer.API;
 namespace Quarry
 {
+    /*
     [StaticConstructorOnStartup]
     public static class StaticConstructorClass
     {
@@ -16,4 +17,5 @@ namespace Quarry
             
         }
     }
+    */
 }

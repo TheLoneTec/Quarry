@@ -4,7 +4,7 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 using Verse.AI;
-using Multiplayer.API;
+//using Multiplayer.API;
 
 namespace Quarry
 {
@@ -99,7 +99,7 @@ namespace Quarry
             ticksToPickHit = Mathf.RoundToInt((120f / statValue));
         }
 
-        [SyncMethod]
+//        [SyncMethod]
         private Toil Mine()
         {
             int time = QuarrySettings.mineTicksAverage;

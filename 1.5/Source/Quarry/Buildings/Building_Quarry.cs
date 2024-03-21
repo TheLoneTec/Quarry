@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Multiplayer.API;
+//using Multiplayer.API;
 using UnityEngine;
 using RimWorld;
 using Verse;
@@ -592,17 +592,17 @@ namespace Quarry
             return new FloatMenu(floatMenu);
         }
         
-        [SyncMethod]
+//        [SyncMethod]
         private static void MineModeResources(Building_Quarry __instance)
         {
             __instance.mineModeToggle = MiningMode.Resources;
         }
-        [SyncMethod]
+//        [SyncMethod]
         private static void MineModeBlocks(Building_Quarry __instance)
         {
             __instance.mineModeToggle = MiningMode.Blocks;
         }
-        [SyncMethod]
+ //       [SyncMethod]
         private static void MineModeChunks(Building_Quarry __instance)
         {
             __instance.mineModeToggle = MiningMode.Chunks;
@@ -660,7 +660,7 @@ namespace Quarry
             }
         }
 
-        [SyncMethod]
+//        [SyncMethod]
         private void ToggleAutoHaul()
         {
             autoHaul = !autoHaul;
