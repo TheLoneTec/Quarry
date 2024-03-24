@@ -8,8 +8,8 @@
     <priorityInType>100</priorityInType>
     <verb>quarry at</verb>
     <gerund>quarrying at</gerund>
-		<tagToGive>Fieldwork</tagToGive>
-		<requiredCapacities>
+	<tagToGive>Fieldwork</tagToGive>
+	<requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
   </WorkGiverDef>
