@@ -7,6 +7,12 @@
   <Frame_QRY_Quarry.label>採石場(施工)</Frame_QRY_Quarry.label>
   <Frame_QRY_Quarry.description>長い間埋蔵されていた資源を掘り起こすための大きな穴。</Frame_QRY_Quarry.description>
 
+  <QRY_MediQuarry.label>採石場(中)</QRY_MediQuarry.label>
+  <QRY_MediQuarry.description>長い間埋蔵されていた資源を掘り起こすための中規模な穴。</QRY_MediQuarry.description>
+  <Blueprint_QRY_MediQuarry.label>採石場(中)(設計)</Blueprint_QRY_MediQuarry.label>
+  <Frame_QRY_MediQuarry.label>採石場(中)(施工)</Frame_QRY_MediQuarry.label>
+  <Frame_QRY_MediQuarry.description>長い間埋蔵されていた資源を掘り起こすための中規模な穴。</Frame_QRY_MediQuarry.description>
+
   <QRY_MiniQuarry.label>採石場(小)</QRY_MiniQuarry.label>
   <QRY_MiniQuarry.description>長い間埋蔵されていた資源を掘り起こすための小さな穴。</QRY_MiniQuarry.description>
   <Blueprint_QRY_MiniQuarry.label>採石場(小)(設計)</Blueprint_QRY_MiniQuarry.label>
