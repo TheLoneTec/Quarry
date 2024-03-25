@@ -71,6 +71,31 @@
 	</ThingDef>
 
 	<ThingDef ParentName="QRY_QuarryBase">
+		<defName>QRY_MediQuarry</defName>
+		<thingClass>Quarry.Building_MediQuarry</thingClass>
+		<label>med quarry</label>
+		<description>A medium pit for digging up long buried resources.</description>
+		<graphicData>
+			<texPath>Cupro/Object/MiniQuarry</texPath>
+			<drawSize>(9,9)</drawSize>
+		</graphicData>
+		<statBases>
+			<WorkToBuild>33500</WorkToBuild>
+			<Beauty>-17</Beauty>
+		</statBases>
+		<size>(9,9)</size>
+		<costList>
+			<Steel>75</Steel>
+		</costList>
+		<comps>
+			<li Class="CompProperties_AssignableToPawn">
+				<drawAssignmentOverlay>true</drawAssignmentOverlay>
+				<!-- <compClass>CompAssignableToPawn_Bed</compClass> -->
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="QRY_QuarryBase">
 		<defName>QRY_MiniQuarry</defName>
 		<thingClass>Quarry.Building_MiniQuarry</thingClass>
 		<label>mini quarry</label>

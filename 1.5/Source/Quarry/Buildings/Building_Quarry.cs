@@ -163,8 +163,8 @@ namespace Quarry
         #endregion Public Properties
 
         #region Protected Properties
-        protected virtual int QuarryDamageMultiplier => 1;
-        protected virtual int SinkholeFrequency => 100;
+        protected virtual int QuarryDamageMultiplier => 3;
+        protected virtual int SinkholeFrequency => 75;
 
         protected virtual List<IntVec3> LadderOffsets
         {

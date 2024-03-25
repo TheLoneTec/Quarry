@@ -53,8 +53,7 @@ namespace Quarry
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            return pawn.Map.listerBuildings.AllBuildingsColonistOfDef(QuarryDefOf.QRY_Quarry).Cast<Thing>().Concat(
-                                  pawn.Map.listerBuildings.AllBuildingsColonistOfDef(QuarryDefOf.QRY_MiniQuarry).Cast<Thing>());
+            return pawn.Map.listerBuildings.AllColonistBuildingsOfType<Building_Quarry>();
         }
     }
 }

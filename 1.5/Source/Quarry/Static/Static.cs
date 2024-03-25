@@ -26,6 +26,7 @@ namespace Quarry
         public static IntVec3 LadderOffset_Big2 = new IntVec3(-3, 0, 6);
         public static IntVec3 LadderOffset_Big3 = new IntVec3(4, 0, 5);
         public static IntVec3 LadderOffset_Big4 = new IntVec3(4, 0, 6);
+        public static IntVec3 LadderOffset_Med = new IntVec3(0, 0, 4);
         public static IntVec3 LadderOffset_Small = new IntVec3(0, 0, 3);
 
         public static string Quarry = "QRY_Quarry".Translate();

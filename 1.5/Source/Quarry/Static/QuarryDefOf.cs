@@ -8,6 +8,7 @@ namespace Quarry
     {
 
         public static ThingDef QRY_Quarry;
+        public static ThingDef QRY_MediQuarry;
         public static ThingDef QRY_MiniQuarry;
         public static ThingDef Chemfuel;
         public static ThingDef MineableComponentsIndustrial;
