@@ -685,7 +685,7 @@ namespace Quarry
             // The default behavior is to allow resources, but not blocks
             if (!QuarryDefOf.Stonecutting.IsFinished)
             {
-                mineMode.Disable(Static.ReportGizmoLackingResearch);
+                mineMode.Disable(Static.ReportGizmoLackingResearch + " (" +QuarryDefOf.Stonecutting.LabelCap + ")");
             }
             yield return mineMode;
 

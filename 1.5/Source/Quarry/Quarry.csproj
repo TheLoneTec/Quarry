@@ -66,14 +66,6 @@
     <Compile Include="AI\WorkGiver_MineQuarry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="com.rlabrecque.steamworks.net">
       <HintPath>..\..\..\..\..\RimWorldWin64_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
       <Private>False</Private>
@@ -390,6 +382,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4297" />
     <PackageReference Include="Lib.Harmony">
       <Version>2.2.2</Version>
     </PackageReference>
@@ -402,27 +395,6 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  <Target Name="MyCode" BeforeTargets="UpdateReferences">
-    <PropertyGroup>
-      <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
-      <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
-      <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
-    </PropertyGroup>
-    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PkgKrafs_Rimworld_Ref)\ref\net472\" Condition="Exists('$(AssemblyCSharp)')" />
-    <ItemGroup>
-      <Reference Include="$(AssemblyCSharp_Publicised)">
-        <SpecificVersion>false</SpecificVersion>
-        <HintPath>$(AssemblyCSharp_Publicised)</HintPath>
-        <Implicit>true</Implicit>
-        <Private>false</Private>
-      </Reference>
-    </ItemGroup>
-  </Target>
-  <Target Name="UpdateReferences" AfterTargets="ResolveLockFileReferences">
-    <ItemGroup>
-      <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
-    </ItemGroup>
-  </Target>
   <ItemGroup>
     <Reference Update="System">
       <Private>False</Private>

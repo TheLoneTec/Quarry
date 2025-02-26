@@ -41,6 +41,12 @@ namespace Quarry {
 				TerrainDef terrainLeave = rockDef.building.leaveTerrain;
 				TerrainDef terrainSmoothed = terrainNatural?.smoothedTerrain ?? null;
 				ThingDef blockDef = blockDefs.Find(x => x.label.Contains(rockDef.label)) ?? null;
+				if (QuarrySettings.quarryableStone.ContainsKey(rockDef.LabelCap))
+				{
+								Log.Error("[Quarry] Rocks with duplicate labels, please relabel: " + rockDef.defName + ". Skipping, this rock will not be available in quarry.");
+								continue;
+    }
+
 				QuarrySettings.quarryableStone.Add(rockDef.LabelCap, new QuarryRockType(rockDef, chunkDef, blockDef));
 				//	Log.Message($"Quarry:: RockDef New: {rockDef.LabelCap}:: rockDef: {rockDef}, chunkDef: {chunkDef}, blockDef: {blockDef}");
 				if (!processed.Contains(rockDef.LabelCap)) processed.Add(rockDef.LabelCap);
@@ -66,7 +72,12 @@ namespace Quarry {
 					}
 					else
 					{
-						QuarrySettings.quarryableStone.Add(rockDef.LabelCap, new QuarryRockType(rockDef, chunkDef, blockDef));
+      if (QuarrySettings.quarryableStone.ContainsKey(rockDef.LabelCap))
+      {
+       Log.Error("[Quarry] Rocks with duplicate labels, please relabel: " + rockDef.defName + ". Skipping, this rock will not be available in quarry.");
+       continue;
+      }
+      QuarrySettings.quarryableStone.Add(rockDef.LabelCap, new QuarryRockType(rockDef, chunkDef, blockDef));
 						//	Log.Message($"Quarry:: QuarryableStoneDef New: {rockType}:: rockDef: {rockDef}, chunkDef: {chunkDef}, blockDef: {blockDef}");
 					}
 					if (!processed.Contains(rockDef.LabelCap)) processed.Add(rockDef.LabelCap);
@@ -99,7 +110,12 @@ namespace Quarry {
 					}
 					else
 					{
-						QuarrySettings.quarryableStone.Add(rockDef.LabelCap, new QuarryRockType(rockDef, chunkDef, blockDef));
+      if (QuarrySettings.quarryableStone.ContainsKey(rockDef.LabelCap))
+      {
+       Log.Error("[Quarry] Rocks with duplicate labels, please relabel: " + rockDef.defName + ". Skipping, this rock will not be available in quarry.");
+       continue;
+      }
+      QuarrySettings.quarryableStone.Add(rockDef.LabelCap, new QuarryRockType(rockDef, chunkDef, blockDef));
 						//	Log.Message($"Quarry:: TerrainDef New: {terrainDef}:: rockDef: {rockDef}, chunkDef: {chunkDef}, blockDef: {blockDef}");
 					}
 					if (!processed.Contains(rockDef.LabelCap)) processed.Add(rockDef.LabelCap);
@@ -129,6 +145,10 @@ namespace Quarry {
 			if (rockType.StartsWith("AB_"))
 			{
 				rockType = rockType.Replace("AB_", "");
+			}
+			if (rockType.StartsWith("ZF_"))
+			{
+				rockType = rockType.Replace("ZF_", "");
 			}
 			else
 			if (rockType.StartsWith("GU_"))
